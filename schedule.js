@@ -1,4 +1,4 @@
 var schedule = require('node-schedule');
-const lxrStockIndexTask = require('./task/lxrStockIndexTask')
+const lxrStockIndexTask = require('./service/lxrIndexService')
 
-schedule.scheduleJob('*/5 * * * *', lxrStockIndexTask.fetchLXRIndexDataTask());
+schedule.scheduleJob('*/5 * * * *', lxrStockIndexTask.lauchLxrIndexTask())
