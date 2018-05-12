@@ -35,10 +35,6 @@ module.exports = {
         let tempLatestDealDate
         await indexDatas.forEach(indexData => {
             tempLatestDealDate = String(indexData.date)
-            console.log(tempLatestDealDate)
-            // indexData.pe_ttm = JSON.stringify(indexData.pe_ttm)
-            // indexData.pb = JSON.stringify(indexData.pb)
-            // indexData.dividend_r = JSON.stringify(indexData.dividend_r)
             redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, indexData.stockCode, JSON.stringify(indexData))
         });
         redisUtil.redisSet(config.redisStoreKey.lxrIndexDealDateKey, tempLatestDealDate)
