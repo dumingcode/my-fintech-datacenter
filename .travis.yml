@@ -2,7 +2,7 @@ sudo: false
 language: node_js
 node_js:
   - 8
-before_install: openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in config.js.enc -out config.js -d
+before_install: openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in ./config/config.js.enc -out ./config/config.js -d
 before_script: sudo redis-server /etc/redis/redis.conf --requirepass  $redis-password
 script: 
   - npm test
