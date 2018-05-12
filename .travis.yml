@@ -1,0 +1,7 @@
+sudo: false
+language: node_js
+node_js:
+  - 7
+before_script: sudo redis-server /etc/redis/redis.conf --requirepass  "${redis-password}"
+script: 
+  - npm test
