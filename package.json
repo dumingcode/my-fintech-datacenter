@@ -4,7 +4,7 @@
   "description": "data-center",
   "main": "schedule.js",
   "scripts": {
-    "test": "mocha --harmony"
+    "test": "mocha -t 10000 ./test/tasktest.js --harmony"
   },
   "repository": {
     "type": "git",
