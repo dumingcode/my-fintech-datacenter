@@ -5,15 +5,36 @@ const redisConfig = config.redis
 module.exports = {
     redisHSet(key, field, value) {
         let redis = new Redis(redisConfig)
-        return redis.hset(key, field, value)
+        redis.auth(redisConfig.password).then(()=>{
+            return redis.hset(key, field, value)
+         }).catch((err)=>{
+            console.log(err)
+         })
     },
-
+    redisHGet(key, field, value) {
+        let redis = new Redis(redisConfig)
+        redis.auth(redisConfig.password).then(()=>{
+            return redis.hget(key, field)
+         }).catch((err)=>{
+            console.log(err)
+         })
+    },
     redisSet(key, value) {
         let redis = new Redis(redisConfig)
-        return redis.set(key, value)
+        redis.auth(redisConfig.password).then(()=>{
+            return redis.set(key, value)
+         }).catch((err)=>{
+            console.log(err)
+         })
+        
     },
     redisGet(key, value) {
         let redis = new Redis(redisConfig)
-        return redis.get(key)
+         redis.auth(redisConfig.password).then(()=>{
+            return redis.get(key)
+         }).catch((err)=>{
+            console.log(err)
+         })
+        
     }
 }
