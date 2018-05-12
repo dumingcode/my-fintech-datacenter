@@ -3,6 +3,8 @@ const expect = chai.expect
 
 const lxrIndexService = require('../service/lxrIndexService')
 const config = require('../config/config')
+
+
 describe('#lxr', () => {
 it('#lxrStockIndexTask ret right data', function (done) {
     (async function () {
@@ -12,7 +14,7 @@ it('#lxrStockIndexTask ret right data', function (done) {
             expect(indexData.message).to.be.equal('OK')
             done()
         } catch (err) {
-            if (err) throw err;
+            done(err)
         }
     })()
     
