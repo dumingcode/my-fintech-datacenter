@@ -4,7 +4,7 @@
   "description": "data-center",
   "main": "schedule.js",
   "scripts": {
-    "test": "mocha -t 1000 ./test/tasktest.js --exit"
+    "test": "mocha -t 10000 ./test/tasktest.js --exit"
   },
   "repository": {
     "type": "git",
