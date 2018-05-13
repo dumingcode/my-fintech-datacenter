@@ -4,7 +4,8 @@
   "description": "data-center",
   "main": "schedule.js",
   "scripts": {
-    "test": "mocha -t 10000 ./test/tasktest.js --exit"
+    "test": "mocha -t 10000 ./test/tasktest.js --exit",
+    "test-cov": "node node_modules/istanbul-harmony/lib/cli.js cover ./node_modules/mocha/bin/_mocha  -- --timeout 500000 --recursive test/ --bail"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "istanbul": "^0.4.5",
+    "istanbul-harmony": "^0.3.16",
     "mocha": "^5.1.1",
     "supertest": "^3.0.0"
   }
