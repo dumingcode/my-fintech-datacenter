@@ -5,7 +5,7 @@
     "main": "schedule.js",
     "scripts": {
         "test": "mocha -t 10000 ./test/tasktest.js --exit",
-        "test-cov": "node node_modules/istanbul-harmony/lib/cli.js cover ./node_modules/mocha/bin/_mocha  -- --timeout 10000 --recursive test/ --bail"
+        "test-cov": "node node_modules/istanbul-harmony/lib/cli.js cover ./node_modules/mocha/bin/_mocha  -- --timeout 10000 --recursive test/ --bail --exit"
     },
     "repository": {
         "type": "git",
