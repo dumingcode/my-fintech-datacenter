@@ -28,4 +28,4 @@ after_deploy:
   - ssh $deploy_user@39.107.119.46 "pm2 restart datacenter"
 addons:
   ssh_known_hosts: 39.107.119.46 # 请替换成自己的服务器IP
-  
+after_script: "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"  
