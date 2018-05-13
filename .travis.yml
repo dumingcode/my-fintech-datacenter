@@ -2,9 +2,21 @@ sudo: false
 language: node_js
 node_js:
   - 8
-before_install: openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in ./config/config.js.enc -out ./config/config.js -d
+before_install: 
+  - openssl aes-256-cbc -K $encrypted_1fc90f464345_key -iv $encrypted_1fc90f464345_iv -in ./config/config.js.enc -out ./config/config.js -d
+  - openssl aes-256-cbc -K $encrypted_383bc2ea2d21_key -iv $encrypted_383bc2ea2d21_iv -in id_rsa.pub.enc -out id_rsa.pub -d
+  - chmod 600 ~/.ssh/id_rsa
 before_script: sudo redis-server /etc/redis/redis.conf --requirepass  $redis_password
+notifications:
+  email:
+    recipients:
+    - jake1036@126.com
+    on_success: always
+    on_failure: always
 script: 
   - npm test
-
+after_success:
+  - ssh $deploy_user@39.107.119.46 "./travis/datacenter.sh" # 请替换成自己的登录IP和登录用户
+addons:
+  ssh_known_hosts: 39.107.119.46 # 请替换成自己的服务器IP
   
