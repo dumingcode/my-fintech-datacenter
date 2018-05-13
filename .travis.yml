@@ -15,7 +15,7 @@ notifications:
     on_failure: always
 script: 
   - npm test
-after_script:
+after_success:
   - npm run test-cov
 deploy:
   provider: script
