@@ -5,12 +5,12 @@ const axios = require('axios')
 module.exports = {
     //判断当前是否需要获取理性人指数数据，需要的话执行请求
     async lauchLxrIndexTask() {
-        let latestDealDatePromise =  redisUtil.redisGet(config.redisStoreKey.lxrIndexDealDateKey)
-        let lxrIndexDataPromise =  this.queryLxrIndexAPI()
+        let latestDealDatePromise = redisUtil.redisGet(config.redisStoreKey.lxrIndexDealDateKey)
+        let lxrIndexDataPromise = this.queryLxrIndexAPI()
         const lxrIndexData = await lxrIndexDataPromise
         const latestDealDate = await latestDealDatePromise
-        //console.log(lxrIndexData)
-        //console.log(latestDealDate)
+            //console.log(lxrIndexData)
+            //console.log(latestDealDate)
         if (lxrIndexData.status != 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
         if (latestDealDate && lxrIndexData.data[0].date < latestDealDate) {
             return { status: -1, message: "error! lxr data is not latest" }
@@ -32,13 +32,26 @@ module.exports = {
     async saveLxrIndexData(response) {
 
         let indexDatas = response.data
-        let tempLatestDealDate
+        let tempLeastDealDate = null
+        let indexDataAll = {}
         await indexDatas.forEach(indexData => {
-            tempLatestDealDate = String(indexData.date)
-            redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, indexData.stockCode, JSON.stringify(indexData))
-        });
-        redisUtil.redisSet(config.redisStoreKey.lxrIndexDealDateKey, tempLatestDealDate)
+            tempLeastDealDate = String(indexData.date)
 
+            let mydata = {
+                date: String(indexData.date),
+                pe: indexData.pe_ttm.weightedAvg,
+                pe_pos: indexData.pe_ttm.y_10.weightedAvg.latestValPos,
+                pb: indexData.pb.weightedAvg,
+                pb_pos: indexData.pb.y_10.weightedAvg.latestValPos,
+                dividend: indexData.dividend_r.weightedAvg
+            }
+
+            indexDataAll[indexData.stockCode] = mydata
+            redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, indexData.stockCode, JSON.stringify(mydata))
+        });
+        console.log(JSON.stringify(indexDataAll))
+        redisUtil.redisSet(config.redisStoreKey.lxrIndexDealDateKey, tempLeastDealDate)
+        redisUtil.redisSet(config.redisStoreKey.lxrIndexDataAll, JSON.stringify(indexDataAll))
 
 
     }
