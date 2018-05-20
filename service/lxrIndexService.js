@@ -39,6 +39,7 @@ module.exports = {
 
             let mydata = {
                 date: String(indexData.date),
+                cname:indexData.stockCnName,
                 pe: indexData.pe_ttm.weightedAvg,
                 pe_pos: indexData.pe_ttm.y_10.weightedAvg.latestValPos,
                 pb: indexData.pb.weightedAvg,
