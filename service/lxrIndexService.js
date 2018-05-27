@@ -39,11 +39,15 @@ module.exports = {
 
             let mydata = {
                 date: String(indexData.date),
-                cname:indexData.stockCnName,
+                cname: indexData.stockCnName,
                 pe: indexData.pe_ttm.weightedAvg,
                 pe_pos: indexData.pe_ttm.y_10.weightedAvg.latestValPos,
                 pb: indexData.pb.weightedAvg,
                 pb_pos: indexData.pb.y_10.weightedAvg.latestValPos,
+                pb_chance_val: indexData.pb.y_10.weightedAvg.chanceVal,
+                pe_chance_val: indexData.pe_ttm.y_10.weightedAvg.chanceVal,
+                pb_risk_val: indexData.pb.y_10.weightedAvg.riskVal,
+                pe_risk_val: indexData.pe_ttm.y_10.weightedAvg.riskVal,
                 dividend: indexData.dividend_r.weightedAvg
             }
 
