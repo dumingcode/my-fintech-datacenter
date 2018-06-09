@@ -39,16 +39,24 @@ module.exports = {
 
             let mydata = {
                 date: String(indexData.date),
-                cname:indexData.stockCnName,
+                cname: indexData.stockCnName,
                 pe: indexData.pe_ttm.weightedAvg,
                 pe_pos: indexData.pe_ttm.y_10.weightedAvg.latestValPos,
                 pb: indexData.pb.weightedAvg,
                 pb_pos: indexData.pb.y_10.weightedAvg.latestValPos,
+<<<<<<< HEAD
                 dividend: indexData.dividend_r.weightedAvg,
                 pe_min: indexData.pe_ttm.y_10.weightedAvg.minVal,
                 pe_chance: indexData.pe_ttm.y_10.weightedAvg.chanceVal,
                 pb_min: indexData.pb.y_10.weightedAvg.minVal,
                 pb_chance: indexData.pb.y_10.weightedAvg.chanceVal
+=======
+                pb_chance_val: indexData.pb.y_10.weightedAvg.chanceVal,
+                pe_chance_val: indexData.pe_ttm.y_10.weightedAvg.chanceVal,
+                pb_risk_val: indexData.pb.y_10.weightedAvg.riskVal,
+                pe_risk_val: indexData.pe_ttm.y_10.weightedAvg.riskVal,
+                dividend: indexData.dividend_r.weightedAvg
+>>>>>>> df2775bea954fe4267ac0fd2f83e3644b5cf96fd
             }
 
             indexDataAll[indexData.stockCode] = mydata

@@ -57,4 +57,4 @@ typings/
 # dotenv environment variables file
 .env
 # configuration
-config/config.js
+config/secureConfig.js
