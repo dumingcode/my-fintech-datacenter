@@ -36,7 +36,7 @@ module.exports = {
         }
 
         await redisUtil.redisSet(config.redisStoreKey.qmIndexDealDateKey, dateStr.substring(0, 10))
-        console.log(dateStr.substring(0, 10))
+        let indexDataAll = {}
         await indexRows.filter(indexRow => {
             const indexSpans = indexRow.querySelectorAll('span')
             return config.qieman.stockIndex.indexOf(indexSpans[1].rawText) >= 0
@@ -65,8 +65,10 @@ module.exports = {
                 mydata['pb_min_val'] = ''
             }
             console.log(mydata)
+            indexDataAll[mydata.code] = mydata
             redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, mydata.code, JSON.stringify(mydata))
         })
+        redisUtil.redisSet(config.redisStoreKey.qmIndexDataAll, JSON.stringify(indexDataAll))
     }
 
 }

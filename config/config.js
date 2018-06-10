@@ -21,7 +21,8 @@ const config = {
         lxrIndexKey: 'lxrIndex',
         lxrIndexDealDateKey: 'lxrIndexDealDate',
         lxrIndexDataAll: 'lxrIndexDataAll',
-        qmIndexDealDateKey: 'qmIndexDealDate'
+        qmIndexDealDateKey: 'qmIndexDealDate',
+        qmIndexDataAll: 'qmIndexDataAll',
     },
     logConfig: {
         name: 'myfintech-datacenter'

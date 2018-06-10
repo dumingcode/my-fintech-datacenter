@@ -36,7 +36,6 @@ module.exports = {
         let indexDataAll = {}
         await indexDatas.forEach(indexData => {
             tempLeastDealDate = String(indexData.date)
-
             let mydata = {
                 date: String(indexData.date),
                 cname: indexData.stockCnName,
