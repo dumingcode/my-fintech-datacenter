@@ -46,9 +46,9 @@ module.exports = {
                 date: String(dateStr.substring(0, 10)),
                 cname: indexSpans[0].rawText,
                 code: indexSpans[1].rawText,
-                pe: indexSpans[2].rawText,
+                pe: Number(indexSpans[2].rawText),
                 pe_pos: indexSpans[3].rawText,
-                pe_min_val: indexSpans[5].rawText,
+                pe_min_val: Number(indexSpans[5].rawText),
                 source: '且慢'
             }
 
