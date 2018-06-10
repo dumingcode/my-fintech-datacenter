@@ -43,27 +43,15 @@ module.exports = {
         }).forEach(indexRow => {
             const indexSpans = indexRow.querySelectorAll('span')
             let mydata = {
-                    date: String(dateStr.substring(0, 10)),
-                    cname: indexSpans[0].rawText,
-                    code: indexSpans[1].rawText,
-                    pe: indexSpans[2].rawText,
-                    pe_pos: indexSpans[3].rawText,
-                    pe_min_val: indexSpans[5].rawText,
-                    pb: indexSpans[2].rawText,
-                    pb_pos: indexSpans[3].rawText,
-                    pb_min_val: indexSpans[5].rawText,
-                    source: '且慢'
-                }
-                //50AH
-            if ('950090.SH' == indexSpans[1].rawText) {
-                mydata['pe'] = ''
-                mydata['pe_pos'] = ''
-                mydata['pe_min_val'] = ''
-            } else {
-                mydata['pb'] = ''
-                mydata['pb_pos'] = ''
-                mydata['pb_min_val'] = ''
+                date: String(dateStr.substring(0, 10)),
+                cname: indexSpans[0].rawText,
+                code: indexSpans[1].rawText,
+                pe: indexSpans[2].rawText,
+                pe_pos: indexSpans[3].rawText,
+                pe_min_val: indexSpans[5].rawText,
+                source: '且慢'
             }
+
             console.log(mydata)
             indexDataAll[mydata.code] = mydata
             redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, mydata.code, JSON.stringify(mydata))
