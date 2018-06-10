@@ -2,6 +2,9 @@ sudo: false
 language: node_js
 node_js:
   - 8
+cache:
+  directories:
+  - node_modules
 before_install: 
   - openssl aes-256-cbc -K $encrypted_8f2e1fe0e7f3_key -iv $encrypted_8f2e1fe0e7f3_iv -in ./config/secureConfig.js.enc -out ./config/secureConfig.js -d
   - openssl aes-256-cbc -K $encrypted_383bc2ea2d21_key -iv $encrypted_383bc2ea2d21_iv -in id_rsa.enc -out ~/.ssh/id_rsa -d

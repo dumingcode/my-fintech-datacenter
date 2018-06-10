@@ -58,3 +58,4 @@ typings/
 .env
 # configuration
 config/secureConfig.js
+.vscode

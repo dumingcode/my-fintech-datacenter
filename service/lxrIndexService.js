@@ -48,7 +48,8 @@ module.exports = {
                 pe_min_val: indexData.pe_ttm.y_10.weightedAvg.minVal,
                 pe_chance_val: indexData.pe_ttm.y_10.weightedAvg.chanceVal,
                 pb_min_val: indexData.pb.y_10.weightedAvg.minVal,
-                pb_chance_val: indexData.pb.y_10.weightedAvg.chanceVal
+                pb_chance_val: indexData.pb.y_10.weightedAvg.chanceVal,
+                source: '理性人'
             }
 
             indexDataAll[indexData.stockCode] = mydata
