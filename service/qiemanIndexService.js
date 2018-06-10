@@ -12,7 +12,7 @@ module.exports = {
     },
 
     async queryQiemanIndexData() {
-        const browser = await puppeteer.launch();　　
+        const browser = await puppeteer.launch({ args: ['--no-sandbox'] });　　
         const page = await browser.newPage();　　
         await page.goto(config.qieman.indexUrl);　　
         let content = await page.content()　
