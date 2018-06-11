@@ -51,6 +51,16 @@ module.exports = {
                 pe_min_val: Number(indexSpans[5].rawText),
                 source: '且慢'
             }
+            if (mydata['code'] == 'CSPSADRP.CI') {
+                mydata['pe_chance_val'] = 15.00
+            } else if (mydata['code'] == '950090.SH') {
+                mydata['pe_chance_val'] = 10.00
+            } else if (mydata['code'] == '930782.CSI') {
+                mydata['pe_chance_val'] = 27.00
+            } else if (mydata['code'] == 'HSCEI.HI') {
+                mydata['pe_chance_val'] = 9.1
+            }
+
 
             console.log(mydata)
             indexDataAll[mydata.code] = mydata
