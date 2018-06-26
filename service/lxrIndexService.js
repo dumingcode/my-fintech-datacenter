@@ -31,7 +31,7 @@ module.exports = {
     //理性人指数数据redis持久化-
     async saveLxrIndexData(response) {
 
-        let indexDatas = response.data
+        let indexDatas = response.data.data
         let tempLeastDealDate = null
         let indexDataAll = {}
         await indexDatas.forEach(indexData => {
