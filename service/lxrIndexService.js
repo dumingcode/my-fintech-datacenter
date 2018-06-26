@@ -12,9 +12,9 @@ module.exports = {
             //console.log(lxrIndexData)
             //console.log(latestDealDate)
         if (lxrIndexData.status != 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
-        if (latestDealDate && lxrIndexData.data[0].date < latestDealDate) {
-            return { status: -1, message: "error! lxr data is not latest" }
-        }
+            // if (latestDealDate && lxrIndexData.data[0].date < latestDealDate) {
+            //     return { status: -1, message: "error! lxr data is not latest" }
+            // }
         await this.saveLxrIndexData(lxrIndexData)
         return { status: 200, message: 'OK' }
     },
