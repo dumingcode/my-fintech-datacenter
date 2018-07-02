@@ -24,14 +24,14 @@ deploy:
   provider: script
   skip_cleanup: true
   script: 
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/bin $deploy_user@39.107.119.46:$DEPLOY_PATH
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/config $deploy_user@39.107.119.46:$DEPLOY_PATH
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/coverage $deploy_user@39.107.119.46:$DEPLOY_PATH
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/schedule $deploy_user@39.107.119.46:$DEPLOY_PATH
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/service $deploy_user@39.107.119.46:$DEPLOY_PATH
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/util $deploy_user@39.107.119.46:$DEPLOY_PATH
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/package.json $deploy_user@39.107.119.46:$DEPLOY_PATH
-  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/package-lock.json $deploy_user@39.107.119.46:$DEPLOY_PATH
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/bin $deploy_user@39.107.119.46:$DEPLOY_PATH/bin
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/config $deploy_user@39.107.119.46:$DEPLOY_PATH/config
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/coverage $deploy_user@39.107.119.46:$DEPLOY_PATH/coverage
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/schedule $deploy_user@39.107.119.46:$DEPLOY_PATH/schedule
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/service $deploy_user@39.107.119.46:$DEPLOY_PATH/service
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/util $deploy_user@39.107.119.46:$DEPLOY_PATH/util
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/package.json $deploy_user@39.107.119.46:$DEPLOY_PATH/package.json
+  - rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/package-lock.json $deploy_user@39.107.119.46:$DEPLOY_PATH/package-lock.json
   on:
     branch: master
 
