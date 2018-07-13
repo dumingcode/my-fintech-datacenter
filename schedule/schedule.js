@@ -18,20 +18,3 @@ schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().t
 }).catch((err) => {
     logUtil.error(err)
 }))
-
-//雪球网抓取
-schedule.scheduleJob('53 23 * * *', xueQiuStockService.lauchXueQiuStockTask(0).then((val) => {
-    logUtil.info({ val }, 'lauchXueQiuStockTask success')
-}).catch((err) => {
-    logUtil.error(err)
-}))
-schedule.scheduleJob('53 23 * * *', xueQiuStockService.lauchXueQiuStockTask(1).then((val) => {
-    logUtil.info({ val }, 'lauchXueQiuStockTask success')
-}).catch((err) => {
-    logUtil.error(err)
-}))
-schedule.scheduleJob('53 23 * * *', xueQiuStockService.lauchXueQiuStockTask(2).then((val) => {
-    logUtil.info({ val }, 'lauchXueQiuStockTask success')
-}).catch((err) => {
-    logUtil.error(err)
-}))
