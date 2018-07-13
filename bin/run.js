@@ -1,5 +1,6 @@
 const lxrStockIndexTask = require('../service/lxrIndexService')
 const qiemanIndexService = require('../service/qiemanIndexService')
+
 const log = require('../util/logUtil')
 const logUtil = log.logUtil
 

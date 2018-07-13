@@ -11,22 +11,28 @@ const stockData = require('../data/stockList');
  * pe pb 52周新低
  */
 module.exports = {
-    async lauchXueQiuStockTask() {
+    async lauchXueQiuStockTask(seq) {
         console.log('start XueQiu job')
         let stockList = stockData.stockList
-            // let xueqiuData = await this.queryXueqiuStockInfo('600030')
         for (let i = 0; i < stockList.length; i++) {
+            if (i % 3 != seq) {
+                continue
+            }
             let code = stockList[i]
+            let start = moment()
             let xueqiuData = await this.queryXueqiuStockInfo(code)
             let xueQiuStock = await this.parseXueqiuHtmlDom(xueqiuData)
             let saveFlag = await this.saveXueQiuStock(code, xueQiuStock)
-            log.info({ 'stockCode': code, 'saveFlag': saveFlag })
+            let end = moment()
+            log.info({
+                'stockCode': code,
+                'duration': end.diff(start) / 1000
+            })
         }
-
-
         return { status: 200, message: 'OK' }
     },
     async saveXueQiuStock(code, xueQiuStock) {
+        xueQiuStock['code'] = code
         return redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, code, JSON.stringify(xueQiuStock))
     },
     async queryXueqiuStockInfo(code) {
