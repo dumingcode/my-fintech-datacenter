@@ -33,13 +33,5 @@ module.exports = {
         let authPromise = await redis.auth(redisConfig.password)
         let result = await redis.get(key)
         return result
-    },
-    redisSadd(key, value) {
-        let redis = new Redis(redisConfig)
-        redis.auth(redisConfig.password).then(() => {
-            return redis.sadd(key, value)
-        }).catch((err) => {
-            console.log(err)
-        })
-    },
+    }
 }
