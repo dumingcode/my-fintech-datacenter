@@ -21,9 +21,23 @@ module.exports = {
             }
             let code = stockList[i]
             let start = moment()
+            let isFetched = await this.isFetchedToday(code)
+            if(isFetched){
+                console.log(`${code} is fetched ${start.format('YYYY-MM-DD')}`)
+                continue
+            }
+
+            
             let xueqiuData = await this.queryXueqiuStockInfo(code)
+            if (!xueqiuData) {
+                log.error(`${code} queryXueqiuStockInfo error`)
+                continue
+            }
             let xueQiuStock = await this.parseXueqiuHtmlDom(xueqiuData)
-            if (xueQiuStock) {
+            if (!xueQiuStock) {
+                log.error(`${code} parseXueqiuHtmlDom error`)
+                continue
+            } else {
                 let saveFlag = await this.saveXueQiuStock(code, xueQiuStock)
             }
             let end = moment()
@@ -41,22 +55,29 @@ module.exports = {
     },
     async saveXueQiuStock(code, xueQiuStock) {
         xueQiuStock['code'] = code
-        return redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, code, JSON.stringify(xueQiuStock))
+        return await redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, code, JSON.stringify(xueQiuStock))
     },
     async queryXueqiuStockInfo(code) {
-        let proxy = this.getProxy()
-        let proxyStr = `https=${proxy.ip}:${proxy.port}`
-        const browser = await puppeteer.launch({ args: ['--no-sandbox', `--proxy-server="${proxyStr}"`] });　　
-        const page = await browser.newPage();　　
-        let queryCode = code
-        if (code.indexOf('6') == 0) {
-            queryCode = `SH${code}`
-        } else {
-            queryCode = `SZ${code}`
+        let content = null
+        try {
+            let proxy = await this.getProxy()
+            let proxyStr = `https=${proxy.ip}:${proxy.port}`
+            log.info(`${code}-----${proxyStr}`)
+            const browser = await puppeteer.launch({ args: ['--no-sandbox', `--proxy-server="${proxyStr}"`] });
+            const page = await browser.newPage();
+            let queryCode = code
+            if (code.indexOf('6') == 0) {
+                queryCode = `SH${code}`
+            } else {
+                queryCode = `SZ${code}`
+            }
+            await page.goto(`https://xueqiu.com/S/${queryCode}`);
+            content = await page.content()
+            await browser.close();
+        } catch (err) {
+            log.error(err)
+            return null
         }
-        await page.goto(`https://xueqiu.com/S/${queryCode}`);　　
-        let content = await page.content()　
-        await browser.close();
         return content
     },
 
@@ -75,7 +96,7 @@ module.exports = {
                 this.parseTd(element.childNodes, index, xueQiuData)
             });
         } catch (err) {
-            console.log(content)
+            log.error('parseXueqiuHtmlDom error')
             return null
         }
         return xueQiuData
@@ -86,7 +107,7 @@ module.exports = {
         trDom.forEach((td, index) => {
             let val = td.text
             let value = val.split('：')[1]
-                //市盈率TTM 2行3列  PE动22
+            //市盈率TTM 2行3列  PE动22
             if (trIndex == 2) {
                 if (index == 3) {
                     xueQiuData['PETTM'] = value
@@ -132,6 +153,17 @@ module.exports = {
         let index = Math.floor(Math.random() * 10)
         let proxy = await redisUtil.redisLindex(config.redisStoreKey.xiCiProxyList, index)
         return JSON.parse(proxy)
+    },
+    async isFetchedToday(code) {
+        let xueqiuStockJson = await redisUtil.redisHGet(config.redisStoreKey.xueQiuStockSet, code)
+        if(!xueqiuStockJson){
+            return false
+        }
+        let stock = JSON.parse(xueqiuStockJson)
+        if(stock['date'] == moment().format('YYYY-MM-DD')){
+            return true
+        }
+        return false
     }
 
 
