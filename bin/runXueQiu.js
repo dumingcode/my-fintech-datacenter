@@ -9,14 +9,14 @@ xueQiuStockService.lauchXueQiuStockTask(0).then((val) => {
     logUtil.error(err)
 })
 
-// xueQiuStockService.lauchXueQiuStockTask(1).then((val) => {
-//     logUtil.info({ val }, 'lauchXueQiuStockTask success')
-// }).catch((err) => {
-//     logUtil.error(err)
-// })
+xueQiuStockService.lauchXueQiuStockTask(1).then((val) => {
+    logUtil.info({ val }, 'lauchXueQiuStockTask success')
+}).catch((err) => {
+    logUtil.error(err)
+})
 
-// xueQiuStockService.lauchXueQiuStockTask(2).then((val) => {
-//     logUtil.info({ val }, 'lauchXueQiuStockTask success')
-// }).catch((err) => {
-//     logUtil.error(err)
-// })
+xueQiuStockService.lauchXueQiuStockTask(2).then((val) => {
+    logUtil.info({ val }, 'lauchXueQiuStockTask success')
+}).catch((err) => {
+    logUtil.error(err)
+})

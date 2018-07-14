@@ -26,9 +26,6 @@ module.exports = {
         log.info({
             'duration': end.diff(start) / 1000
         })
-        //延时随机数字
-        // let delay = Math.floor(Math.random() * 20) * 1000
-        // sleepUtil.sleep(delay < 4000 ? 4000 : delay)
 
         console.log('end Xici job')
         return { status: 200, message: 'OK' }
@@ -55,7 +52,7 @@ module.exports = {
                 if (element['tagName']) {
                     let structuredText = element.structuredText
                     let data = structuredText.split('\n')
-                    //只抓取https类型的
+                        //只抓取https类型的
                     if (data[4] != 'HTTPS') {
                         continue
                     }
@@ -80,11 +77,11 @@ module.exports = {
     },
     async saveXueQiuStock(proxyArr) {
         proxyArr.forEach(element => {
-            let result =  redisUtil.redisLpush(config.redisStoreKey.xiCiProxyList, JSON.stringify(element))
-            log.info({ip:element['ip'],res:result})
+            let result = redisUtil.redisLpush(config.redisStoreKey.xiCiProxyList, JSON.stringify(element))
+            log.info({ ip: element['ip'], res: result })
         });
-       
-       
+
+
     }
 
 

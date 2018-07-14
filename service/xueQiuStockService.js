@@ -1,4 +1,5 @@
 const redisUtil = require('../util/redisUtil')
+const sleepUtil = require('../util/sleep')
 const config = require('../config/config')
 const puppeteer = require('puppeteer');
 const HTMLParser = require('fast-html-parser');
@@ -22,12 +23,19 @@ module.exports = {
             let start = moment()
             let xueqiuData = await this.queryXueqiuStockInfo(code)
             let xueQiuStock = await this.parseXueqiuHtmlDom(xueqiuData)
-            let saveFlag = await this.saveXueQiuStock(code, xueQiuStock)
+            if (xueQiuStock) {
+                let saveFlag = await this.saveXueQiuStock(code, xueQiuStock)
+            }
             let end = moment()
             log.info({
                 'stockCode': code,
                 'duration': end.diff(start) / 1000
             })
+
+            //延时随机数字
+            let delay = Math.floor(Math.random() * 15) * 1000
+            sleepUtil.sleep(delay < 5000 ? 5000 : delay)
+
         }
         return { status: 200, message: 'OK' }
     },
@@ -36,7 +44,9 @@ module.exports = {
         return redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, code, JSON.stringify(xueQiuStock))
     },
     async queryXueqiuStockInfo(code) {
-        const browser = await puppeteer.launch({ args: ['--no-sandbox','--proxy-server="https=180.121.135.57:808"'] });　　
+        let proxy = this.getProxy()
+        let proxyStr = `https=${proxy.ip}:${proxy.port}`
+        const browser = await puppeteer.launch({ args: ['--no-sandbox', `--proxy-server="${proxyStr}"`] });　　
         const page = await browser.newPage();　　
         let queryCode = code
         if (code.indexOf('6') == 0) {
@@ -53,15 +63,21 @@ module.exports = {
 
 
     async parseXueqiuHtmlDom(content) {
-        const root = HTMLParser.parse(content);
-        const indexRows = root.querySelector('.quote-info')
-        let doms = indexRows.childNodes[0]
-        let trDoms = doms.childNodes
         let xueQiuData = {}
-        xueQiuData['date'] = moment().format('YYYY-MM-DD')
-        trDoms.forEach((element, index) => {
-            this.parseTd(element.childNodes, index, xueQiuData)
-        });
+        try {
+            const root = HTMLParser.parse(content);
+            const indexRows = root.querySelector('.quote-info')
+            let doms = indexRows.childNodes[0]
+            let trDoms = doms.childNodes
+
+            xueQiuData['date'] = moment().format('YYYY-MM-DD')
+            trDoms.forEach((element, index) => {
+                this.parseTd(element.childNodes, index, xueQiuData)
+            });
+        } catch (err) {
+            console.log(content)
+            return null
+        }
         return xueQiuData
     },
 
@@ -111,6 +127,11 @@ module.exports = {
                 }
             }
         })
+    },
+    async getProxy() {
+        let index = Math.floor(Math.random() * 10)
+        let proxy = await redisUtil.redisLindex(config.redisStoreKey.xiCiProxyList, index)
+        return JSON.parse(proxy)
     }
 
 
