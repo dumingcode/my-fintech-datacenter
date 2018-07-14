@@ -36,7 +36,7 @@ module.exports = {
         return redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, code, JSON.stringify(xueQiuStock))
     },
     async queryXueqiuStockInfo(code) {
-        const browser = await puppeteer.launch({ args: ['--no-sandbox'] });　　
+        const browser = await puppeteer.launch({ args: ['--no-sandbox','--proxy-server="https=180.121.135.57:808"'] });　　
         const page = await browser.newPage();　　
         let queryCode = code
         if (code.indexOf('6') == 0) {

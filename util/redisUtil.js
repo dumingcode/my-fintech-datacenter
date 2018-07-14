@@ -33,5 +33,17 @@ module.exports = {
         let authPromise = await redis.auth(redisConfig.password)
         let result = await redis.get(key)
         return result
+    },
+    async redisLpush(key, value) {
+        let redis = new Redis(redisConfig)
+        let authPromise = await redis.auth(redisConfig.password)
+        let result = await redis.lpush(key,value)
+        return result
+    },
+    async redisLindex(key, index) {
+        let redis = new Redis(redisConfig)
+        let authPromise = await redis.auth(redisConfig.password)
+        let result = await redis.lindex(key,lindex)
+        return result
     }
 }

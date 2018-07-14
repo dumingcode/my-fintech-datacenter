@@ -11,6 +11,9 @@ const config = {
         indexUrl: 'https://qieman.com/idx-eval',
         stockIndex: ['CSPSADRP.CI', 'HSI.HI', 'HSCEI.HI', '950090.SH', 'SPX.GI', '930782.CSI', 'NDX.GI']
     },
+    xiciDaiLi:{
+          proxyArrLength:10
+    },
     redis: {
         port: 6379,
         host: 'localhost',
@@ -23,7 +26,8 @@ const config = {
         lxrIndexDataAll: 'lxrIndexDataAll',
         qmIndexDealDateKey: 'qmIndexDealDate',
         qmIndexDataAll: 'qmIndexDataAll',
-        xueQiuStockSet: 'xueQiuStockSet'
+        xueQiuStockSet: 'xueQiuStockSet',
+        xiCiProxyList: 'xiCiProxyList'
     },
     logConfig: {
         name: 'myfintech-datacenter'
