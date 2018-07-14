@@ -80,6 +80,7 @@ module.exports = {
             let result = redisUtil.redisLpush(config.redisStoreKey.xiCiProxyList, JSON.stringify(element))
             log.info({ ip: element['ip'], res: result })
         });
+        redisUtil.redisLTrim(config.redisStoreKey.xiCiProxyList, 0, 9)
 
 
     }
