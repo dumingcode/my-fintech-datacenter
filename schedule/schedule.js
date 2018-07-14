@@ -21,7 +21,7 @@ schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().t
 
 
 //抓取proxy的数据
-schedule.scheduleJob('*/10 * * * *', xiCiDailiService.lauchXiciTask().then((val) => {
+schedule.scheduleJob('*/5 * * * *', xiCiDailiService.lauchXiciTask().then((val) => {
     logUtil.info({ val }, 'lauchXiciTask success')
 }).catch((err) => {
     logUtil.error(err)

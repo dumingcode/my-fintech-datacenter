@@ -33,8 +33,8 @@ module.exports = {
             })
 
             //延时随机数字
-            let delay = Math.floor(Math.random() * 15) * 1000
-            sleepUtil.sleep(delay < 5000 ? 5000 : delay)
+            let delay = Math.floor(Math.random() * 60) * 1000
+            sleepUtil.sleep(delay < 30000 ? 30000 : delay)
 
         }
         return { status: 200, message: 'OK' }
