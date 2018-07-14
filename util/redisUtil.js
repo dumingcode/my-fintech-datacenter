@@ -3,30 +3,23 @@ const config = require('../config/config')
 const redisConfig = config.redis
 
 module.exports = {
-    redisHSet(key, field, value) {
+    async redisHSet(key, field, value) {
         let redis = new Redis(redisConfig)
-        redis.auth(redisConfig.password).then(() => {
-            return redis.hset(key, field, value)
-        }).catch((err) => {
-            console.log(err)
-        })
+        let authPromise = await redis.auth(redisConfig.password)
+        let result = await redis.hset(key, field, value)
+        return result
     },
-    redisHGet(key, field) {
+    async redisHGet(key, field) {
         let redis = new Redis(redisConfig)
-        redis.auth(redisConfig.password).then(() => {
-            return redis.hget(key, field)
-        }).catch((err) => {
-            console.log(err)
-        })
+        let authPromise = await redis.auth(redisConfig.password)
+        let result = await redis.hget(key,field)
+        return result
     },
-    redisSet(key, value) {
+    async redisSet(key, value) {
         let redis = new Redis(redisConfig)
-        redis.auth(redisConfig.password).then(() => {
-            return redis.set(key, value)
-        }).catch((err) => {
-            console.log(err)
-        })
-
+        let authPromise = await redis.auth(redisConfig.password)
+        let result = await redis.set(key, field)
+        return result
     },
     async redisGet(key) {
         let redis = new Redis(redisConfig)
