@@ -33,10 +33,14 @@ module.exports = {
 
     //抓取最新的第一页
     async queryXiCiInfo(pageNum) {
-        const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+        // let proxy = await this.getProxy()
+        // let proxyStr = `https=${proxy.ip}:${proxy.port}`118.31.220.3
+        // log.info(`${code}-----${proxyStr}`) , `--proxy-server="${proxyStr}"`
+        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--proxy-server="118.31.220.3:8080"'] });
         const page = await browser.newPage();
-        await page.goto(`http://www.xicidaili.com/nn/${pageNum}`);
+        await page.goto(`http://www.xicidaili.com/nn/1`);
         let content = await page.content()
+        console.log(content)
         await browser.close();
         return content
     },
@@ -45,6 +49,7 @@ module.exports = {
         try {
             const root = HTMLParser.parse(content);
             const indexRows = root.querySelector('#ip_list')
+            console.log(indexRows)
             let tbody = indexRows.lastChild
             let table = tbody.childNodes
             for (let i = 2; i < table.length; i++) {
@@ -76,14 +81,18 @@ module.exports = {
         return proxyArr
     },
     async saveXueQiuStock(proxyArr) {
-        proxyArr.forEach(element => {
-            let result = redisUtil.redisLpush(config.redisStoreKey.xiCiProxyList, JSON.stringify(element))
+        for (let i = 0; i < proxyArr.length; i++) {
+            let element = proxyArr[i]
+            let result = await redisUtil.redisLpush(config.redisStoreKey.xiCiProxyList, JSON.stringify(element))
             log.info({ ip: element['ip'], res: result })
-        });
-        redisUtil.redisLTrim(config.redisStoreKey.xiCiProxyList, 0, 9)
-
-
-    }
+        }
+        await redisUtil.redisLTrim(config.redisStoreKey.xiCiProxyList, 0, config.xiciDaiLi.proxyArrLength - 1)
+    },
+    async getProxy() {
+        let index = Math.floor(Math.random() * config.xiciDaiLi.proxyArrLength)
+        let proxy = await redisUtil.redisLindex(config.redisStoreKey.xiCiProxyList, index)
+        return JSON.parse(proxy)
+    },
 
 
 }

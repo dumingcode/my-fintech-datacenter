@@ -12,13 +12,13 @@ module.exports = {
     async redisHGet(key, field) {
         let redis = new Redis(redisConfig)
         let authPromise = await redis.auth(redisConfig.password)
-        let result = await redis.hget(key,field)
+        let result = await redis.hget(key, field)
         return result
     },
     async redisSet(key, value) {
         let redis = new Redis(redisConfig)
         let authPromise = await redis.auth(redisConfig.password)
-        let result = await redis.set(key, field)
+        let result = await redis.set(key, value)
         return result
     },
     async redisGet(key) {

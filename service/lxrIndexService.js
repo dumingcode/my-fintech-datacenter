@@ -34,7 +34,8 @@ module.exports = {
         let indexDatas = response.data.data
         let tempLeastDealDate = null
         let indexDataAll = {}
-        await indexDatas.forEach(indexData => {
+        for (let i = 0; i < indexDatas.length; i++) {
+            let indexData = indexDatas[i]
             tempLeastDealDate = String(indexData.date)
             let mydata = {
                 date: String(indexData.date),
@@ -52,11 +53,11 @@ module.exports = {
             }
 
             indexDataAll[indexData.stockCode] = mydata
-            redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, indexData.stockCode, JSON.stringify(mydata))
-        });
+            await redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, indexData.stockCode, JSON.stringify(mydata))
+        };
         console.log(JSON.stringify(indexDataAll))
-        redisUtil.redisSet(config.redisStoreKey.lxrIndexDealDateKey, tempLeastDealDate)
-        redisUtil.redisSet(config.redisStoreKey.lxrIndexDataAll, JSON.stringify(indexDataAll))
+        await redisUtil.redisSet(config.redisStoreKey.lxrIndexDealDateKey, tempLeastDealDate)
+        await redisUtil.redisSet(config.redisStoreKey.lxrIndexDataAll, JSON.stringify(indexDataAll))
 
 
     }

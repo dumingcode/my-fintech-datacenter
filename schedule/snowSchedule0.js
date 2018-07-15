@@ -5,7 +5,7 @@ const logUtil = log.logUtil
 
 
 //雪球网抓取
-schedule.scheduleJob('53 23 * * *', xueQiuStockService.lauchXueQiuStockTask(0).then((val) => {
+schedule.scheduleJob('1 0/2 * * *', xueQiuStockService.lauchXueQiuStockTask(0).then((val) => {
     logUtil.info({ val }, 'lauchXueQiuStockTask success')
 }).catch((err) => {
     logUtil.error(err)

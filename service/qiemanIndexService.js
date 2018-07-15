@@ -7,16 +7,24 @@ module.exports = {
     async lauchQiemanIndexTask() {
         console.log('start qieman job')
         let qmIndexData = await this.queryQiemanIndexData()
-        await this.parseQiemanHtmlDom(qmIndexData)
+        if (qmIndexData) {
+            await this.parseQiemanHtmlDom(qmIndexData)
+        }
         return { status: 200, message: 'OK' }
     },
 
     async queryQiemanIndexData() {
-        const browser = await puppeteer.launch({ args: ['--no-sandbox'] });　　
-        const page = await browser.newPage();　　
-        await page.goto(config.qieman.indexUrl);　　
-        let content = await page.content()　
-        await browser.close();
+        let content = null
+        try {
+            const browser = await puppeteer.launch({ args: ['--no-sandbox'] });　　
+            const page = await browser.newPage();　　
+            await page.goto(config.qieman.indexUrl);　　
+            content = await page.content()　
+            await browser.close();
+        } catch (err) {
+            console.log(err)
+            return content
+        }
         return content
     },
 
@@ -37,10 +45,12 @@ module.exports = {
 
         await redisUtil.redisSet(config.redisStoreKey.qmIndexDealDateKey, dateStr.substring(0, 10))
         let indexDataAll = {}
-        await indexRows.filter(indexRow => {
+        let qmArr = await indexRows.filter(indexRow => {
             const indexSpans = indexRow.querySelectorAll('span')
             return config.qieman.stockIndex.indexOf(indexSpans[1].rawText) >= 0
-        }).forEach(indexRow => {
+        })
+        for (let i = 0; i < qmArr.length; i++) {
+            indexRow = qmArr[i]
             const indexSpans = indexRow.querySelectorAll('span')
             let mydata = {
                 date: String(dateStr.substring(0, 10)),
@@ -64,9 +74,9 @@ module.exports = {
 
             console.log(mydata)
             indexDataAll[mydata.code] = mydata
-            redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, mydata.code, JSON.stringify(mydata))
-        })
-        redisUtil.redisSet(config.redisStoreKey.qmIndexDataAll, JSON.stringify(indexDataAll))
+            await redisUtil.redisHSet(config.redisStoreKey.lxrIndexKey, mydata.code, JSON.stringify(mydata))
+        }
+        await redisUtil.redisSet(config.redisStoreKey.qmIndexDataAll, JSON.stringify(indexDataAll))
     }
 
 }
