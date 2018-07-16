@@ -20,7 +20,7 @@ module.exports = {
         let start = moment()
         let xiCiData = await this.queryXiCiInfo(1)
         let xueQiuStock = await this.parseXiCiHtmlDom(xiCiData)
-        console.log(xueQiuStock)
+            // console.log(xueQiuStock)
         await this.saveXueQiuStock(xueQiuStock)
         let end = moment()
         log.info({
@@ -36,11 +36,11 @@ module.exports = {
         // let proxy = await this.getProxy()
         // let proxyStr = `https=${proxy.ip}:${proxy.port}`118.31.220.3
         // log.info(`${code}-----${proxyStr}`) , `--proxy-server="${proxyStr}"`
-        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--proxy-server="118.31.220.3:8080"'] });
+        const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
         const page = await browser.newPage();
         await page.goto(`http://www.xicidaili.com/nn/1`);
         let content = await page.content()
-        console.log(content)
+            // console.log(content)
         await browser.close();
         return content
     },
@@ -49,7 +49,7 @@ module.exports = {
         try {
             const root = HTMLParser.parse(content);
             const indexRows = root.querySelector('#ip_list')
-            console.log(indexRows)
+                // console.log(indexRows)
             let tbody = indexRows.lastChild
             let table = tbody.childNodes
             for (let i = 2; i < table.length; i++) {

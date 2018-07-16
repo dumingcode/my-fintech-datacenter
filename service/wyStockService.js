@@ -7,13 +7,15 @@ const moment = require('moment');
 const bunyan = require('bunyan');
 const log = bunyan.createLogger({ name: 'xueQiu' });
 const stockData = require('../data/stockList');
+const getData = require('./getData')
+
 /**
  * 雪球网个股简况抓取
  * pe pb 52周新低
  */
 module.exports = {
     async lauchXueQiuStockTask(seq) {
-        console.log('start XueQiu job')
+        console.log('start Wy job')
         let stockList = stockData.stockList
         for (let i = 0; i < stockList.length; i++) {
             if (i % 3 != seq) {
@@ -28,18 +30,24 @@ module.exports = {
             }
 
 
-            let xueqiuData = await this.queryXueqiuStockInfo(code)
+            let xueqiuData = await this.queryWyStockInfo(code)
             if (!xueqiuData) {
-                log.error(`${code} queryXueqiuStockInfo error`)
+                log.error(`${code} queryWyStockInfo error`)
                 continue
             }
-            let xueQiuStock = await this.parseXueqiuHtmlDom(xueqiuData)
-            if (!xueQiuStock) {
-                log.error(`${code} parseXueqiuHtmlDom error`)
-                continue
-            } else {
-                let saveFlag = await this.saveXueQiuStock(code, xueQiuStock)
-            }
+
+            let yearData = await this.calcYearLowHighPrice(xueqiuData)
+            console.log(code + '---' + yearData)
+
+
+
+            // let xueQiuStock = await this.parseXueqiuHtmlDom(xueqiuData)
+            // if (!xueQiuStock) {
+            //     log.error(`${code} parseXueqiuHtmlDom error`)
+            //     continue
+            // } else {
+            //     let saveFlag = await this.saveXueQiuStock(code, xueQiuStock)
+            // }
             let end = moment()
             log.info({
                 'stockCode': code,
@@ -47,8 +55,8 @@ module.exports = {
             })
 
             //延时随机数字
-            let delay = Math.floor(Math.random() * 60) * 1000
-            sleepUtil.sleep(delay < 30000 ? 30000 : delay)
+            let delay = Math.floor(Math.random() * 30) * 1000
+            sleepUtil.sleep(delay < 10000 ? 10000 : delay)
 
         }
         return { status: 200, message: 'OK' }
@@ -57,50 +65,68 @@ module.exports = {
         xueQiuStock['code'] = code
         return await redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, code, JSON.stringify(xueQiuStock))
     },
-    async queryXueqiuStockInfo(code) {
-        let content = null
+    async queryWyStockInfo(code) {
+        let content1 = null
+        let content2 = null
         try {
-            let proxy = await this.getProxy()
-            let proxyStr = `https=${proxy.ip}:${proxy.port}`
-            log.info(`${code}-----${proxyStr}`)
-            const browser = await puppeteer.launch({ args: ['--no-sandbox', `--proxy-server="${proxyStr}"`] });
-            const page = await browser.newPage();
-            let queryCode = code
+            let now = moment()
+            let thisYear = now.year()
+            let lastYear = now.year() - 1
+            let url1 = null
+            let url2 = null
             if (code.indexOf('6') == 0) {
-                queryCode = `SH${code}`
+                url1 = `http://img1.money.126.net/data/hs/klinederc/day/history/${thisYear}/0${code}.json`
+                url2 = `http://img1.money.126.net/data/hs/klinederc/day/history/${lastYear}/0${code}.json`
             } else {
-                queryCode = `SZ${code}`
+                url1 = `http://img1.money.126.net/data/hs/klinederc/day/history/${thisYear}/1${code}.json`
+                url2 = `http://img1.money.126.net/data/hs/klinederc/day/history/${lastYear}/1${code}.json`
             }
-            await page.goto(`https://xueqiu.com/S/${queryCode}`);
-            content = await page.content()
-            await browser.close();
+            content1 = await getData.queryWyStockApi(url1)
+            content2 = await getData.queryWyStockApi(url2)
         } catch (err) {
             log.error(err)
             return null
         }
-        return content
+        return [content1.data.data, content2.data.data]
+    },
+
+    async calcYearLowHighPrice(data) {
+        let thisYearArr = data[0]
+        let lastYearArr = data[1]
+        let now = moment()
+        let endDate = now.year() * 10000 + now.month() * 100 + now.day()
+        let startDate = (now.year() - 1) * 10000 + now.month() * 100 + now.day()
+        let min = 10000000
+        let max = 0
+
+
+        await thisYearArr.forEach(element => {
+            let date = parseInt(element[0])
+            if (date >= startDate && date <= endDate) {
+                if (element[4] <= min) {
+                    min = element[4]
+                }
+                if (element[4] > max) {
+                    max = element[4]
+                }
+            }
+        })
+
+        await lastYearArr.forEach(element => {
+            let date = parseInt(element[0])
+            if (date >= startDate && date <= endDate) {
+                if (element[4] <= min) {
+                    min = element[4]
+                }
+                if (element[4] > max) {
+                    max = element[4]
+                }
+            }
+        })
+        return { 'max': max, 'min': min }
     },
 
 
-
-    async parseXueqiuHtmlDom(content) {
-        let xueQiuData = {}
-        try {
-            const root = HTMLParser.parse(content);
-            const indexRows = root.querySelector('.quote-info')
-            let doms = indexRows.childNodes[0]
-            let trDoms = doms.childNodes
-
-            xueQiuData['date'] = moment().format('YYYY-MM-DD')
-            trDoms.forEach((element, index) => {
-                this.parseTd(element.childNodes, index, xueQiuData)
-            });
-        } catch (err) {
-            log.error('parseXueqiuHtmlDom error')
-            return null
-        }
-        return xueQiuData
-    },
 
     //逐行处理每个财务数据 
     parseTd(trDom, trIndex, xueQiuData) {
