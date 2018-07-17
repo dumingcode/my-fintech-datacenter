@@ -16,9 +16,9 @@ module.exports = {
         console.log('start XueQiu job')
         let stockList = stockData.stockList
         for (let i = 0; i < stockList.length; i++) {
-            if (i % 3 != seq) {
-                continue
-            }
+            // if (i % 3 != seq) {
+            //     continue
+            // }
             let code = stockList[i]
             let start = moment()
             let isFetched = await this.isFetchedToday(code)
@@ -47,8 +47,8 @@ module.exports = {
             })
 
             //延时随机数字
-            let delay = Math.floor(Math.random() * 60) * 1000
-            sleepUtil.sleep(delay < 30000 ? 30000 : delay)
+            let delay = Math.floor(Math.random() * 20) * 1000
+            sleepUtil.sleep(delay < 8000 ? 8000 : delay)
 
         }
         return { status: 200, message: 'OK' }
@@ -62,9 +62,12 @@ module.exports = {
         try {
             let proxy = await this.getProxy()
             let proxyStr = `https=${proxy.ip}:${proxy.port}`
-            log.info(`${code}-----${proxyStr}`)
+
             const browser = await puppeteer.launch({ args: ['--no-sandbox', `--proxy-server="${proxyStr}"`] });
             const page = await browser.newPage();
+            let userAgent = await this.getUserAgent()
+            await page.setUserAgent(userAgent)
+            log.info(`${code}-----${proxyStr}---${userAgent}`)
             let queryCode = code
             if (code.indexOf('6') == 0) {
                 queryCode = `SH${code}`
@@ -153,6 +156,10 @@ module.exports = {
         let index = Math.floor(Math.random() * config.xiciDaiLi.proxyArrLength)
         let proxy = await redisUtil.redisLindex(config.redisStoreKey.xiCiProxyList, index)
         return JSON.parse(proxy)
+    },
+    async getUserAgent() {
+        let index = Math.floor(Math.random() * stockData.userAgentList.length)
+        return stockData.userAgentList[index]
     },
     async isFetchedToday(code) {
         let xueqiuStockJson = await redisUtil.redisHGet(config.redisStoreKey.xueQiuStockSet, code)
