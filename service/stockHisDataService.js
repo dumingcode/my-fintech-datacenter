@@ -101,7 +101,7 @@ module.exports = {
         try {
             saveRes = await mongdbUtils.insertMany('stock', 'hisprice', stockArr)
         } catch (err) {
-            console.log(err)
+            //console.log(err)
         }
         return saveRes
     }
