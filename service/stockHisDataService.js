@@ -23,7 +23,11 @@ module.exports = {
 
             let code = stockList[i]
             let start = moment()
-
+            let count = await mongdbUtils.queryCollectionCount('stock', 'hisprice', { 'code': code })
+            if (count > 0) {
+                log.info(`${code} is fetched ${count}`)
+                continue
+            }
             let hisData = await this.queryHisStockInfo(code)
             if (!hisData) {
                 log.error(`${code} launchStockHisDataTask error`)
