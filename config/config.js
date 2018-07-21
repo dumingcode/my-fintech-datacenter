@@ -31,6 +31,9 @@ const config = {
     },
     logConfig: {
         name: 'myfintech-datacenter'
+    },
+    mongoDb: {
+        url: 'mongodb://localhost:27017'
     }
 }
 

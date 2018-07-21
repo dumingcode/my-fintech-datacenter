@@ -8,6 +8,7 @@ const bunyan = require('bunyan');
 const log = bunyan.createLogger({ name: 'xueQiu' });
 const stockData = require('../data/stockList');
 const getData = require('./getData')
+const mongdbUtils = require('../util/mongdbUtils');
 
 /**
  * 雪球网个股简况抓取
@@ -29,6 +30,7 @@ module.exports = {
                 continue
             }
             let stockArr = await this.parseHisDataToJsonArr(hisData, code)
+            let saveRes = await this.saveStockHisPrice(stockArr)
 
             let end = moment()
             log.info({
@@ -39,16 +41,28 @@ module.exports = {
             //延时随机数字
             let delay = Math.floor(Math.random() * 30) * 1000
             sleepUtil.sleep(delay < 10000 ? 10000 : delay)
-
         }
         return { status: 200, message: 'OK' }
     },
     async queryHisStockInfo(code) {
         let data = null
         try {
-            data = await getData.queryifengStockHisApi(code)
+            let queryCode = ''
+            if (code.indexOf('6') == 0) {
+                queryCode = `sh${code}`
+            } else {
+                queryCode = `sz${code}`
+            }
+            data = await getData.queryTTStockHisApi(queryCode)
             if (data.status == '200') {
-                return data.data.record
+                let retData = data.data
+                if (retData.code !== 0) {
+                    console.log(retData.msg)
+                    return null
+                }
+                retData = retData['data']
+                let _temp = retData[queryCode]
+                return _temp['qfqday']
             }
         } catch (err) {
             log.error(err)
@@ -58,29 +72,35 @@ module.exports = {
     },
     parseHisDataToJsonArr(data, code) {
         let stockArr = []
-        let stockInfo = {}
-            //'date', 'open', 'high', 'close', 'low', 'volume', 
-            // 'chg', '%chg', 'ma5', 'ma10', 'ma20', 
-            // 'vma5', 'vma10', 'vma20'
+
+        //'date', 'open', 'high', 'close', 'low', 'volume', 
+        // 'chg', '%chg', 'ma5', 'ma10', 'ma20', 
+        // 'vma5', 'vma10', 'vma20'
         data.forEach(element => {
+            let stockInfo = {}
+            let date = element[0]
+            date = date.replace(/-/g, '')
+            stockInfo['_id'] = `${code}-${date}`
             stockInfo['code'] = code
-            stockInfo['date'] = element[0]
-            stockInfo['open'] = element[1]
-            stockInfo['high'] = element[2]
-            stockInfo['close'] = element[3]
-            stockInfo['low'] = element[4]
-            stockInfo['volume'] = element[5]
-            stockInfo['chg'] = element[6]
-            stockInfo['chgPer'] = element[7]
-            stockInfo['ma5'] = element[8]
-            stockInfo['ma10'] = element[9]
-            stockInfo['ma20'] = element[10]
-            stockInfo['vma5'] = element[11]
-            stockInfo['vma10'] = element[12]
-            stockInfo['vma20'] = element[13]
+            stockInfo['date'] = Number(date)
+            stockInfo['open'] = Number(element[1])
+            stockInfo['high'] = Number(element[2])
+            stockInfo['close'] = Number(element[3])
+            stockInfo['low'] = Number(element[4])
+            stockInfo['amount'] = Number(element[5])
             stockArr.push(stockInfo)
         })
         return stockArr
+    },
+    async saveStockHisPrice(stockArr) {
+        let saveRes = ''
+        try {
+            saveRes = await mongdbUtils.insertMany('stock', 'hisprice', stockArr)
+        } catch (err) {
+            console.log(err)
+        }
+        return saveRes
     }
+
 
 }

@@ -11,7 +11,13 @@ module.exports = {
         } else {
             queryCode = `sz${code}`
         }
-        url = `http://api.finance.ifeng.com/akdaily/?code=${queryCode}&type=last`
+        url = `http://api.finance.ifeng.com/akdaily/?code=${queryCode}&type=fq`
+        return http.get(url, null, false)
+    },
+    //查询腾讯财经前复权股票历史数据
+    queryTTStockHisApi(code) {
+        let random = Math.random()
+        url = `http://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,640,qfq&r=${random}`
         return http.get(url, null, false)
     }
 }
