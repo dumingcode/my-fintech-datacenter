@@ -34,7 +34,8 @@ const config = {
     },
     mongoDb: {
         url: 'mongodb://localhost:27017'
-    }
+    },
+    dailyStockBatchNum: 30
 }
 
 module.exports = config

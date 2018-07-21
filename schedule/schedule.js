@@ -1,7 +1,8 @@
 var schedule = require('node-schedule');
 const lxrStockIndexTask = require('../service/lxrIndexService')
 const qmStockIndexTask = require('../service/qiemanIndexService')
-const xiCiDailiService = require('../service/xiCiDailiService')
+    // const xiCiDailiService = require('../service/xiCiDailiService')
+const stockDailyTask = require('../service/stockDailyDataService')
 const log = require('../util/logUtil')
 const logUtil = log.logUtil
 
@@ -21,8 +22,14 @@ schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().t
 
 
 //抓取proxy的数据
-schedule.scheduleJob('*/10 * * * *', xiCiDailiService.lauchXiciTask().then((val) => {
-    logUtil.info({ val }, 'lauchXiciTask success')
+// schedule.scheduleJob('*/10 * * * *', xiCiDailiService.lauchXiciTask().then((val) => {
+//     logUtil.info({ val }, 'lauchXiciTask success')
+// }).catch((err) => {
+//     logUtil.error(err)
+// }))
+
+schedule.scheduleJob('34 22-23 * * *', stockDailyTask.launchStockDailyDataTask.then((val) => {
+    logUtil.info({ val }, 'launchStockDailyDataTask success')
 }).catch((err) => {
     logUtil.error(err)
 }))

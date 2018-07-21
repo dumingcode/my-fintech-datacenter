@@ -19,5 +19,10 @@ module.exports = {
         let random = Math.random()
         url = `http://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,640,qfq&r=${random}`
         return http.get(url, null, false)
+    },
+    //查询滚需求每日收盘后的数据-批量查询
+    queryGunXueQiuStockDayApi(codes) {
+        url = `https://gunxueqiu.site/api/bigdata/querySinaStockGet.json?codes=${codes}`
+        return http.get(url, null, false)
     }
 }
