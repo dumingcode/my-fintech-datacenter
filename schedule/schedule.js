@@ -1,8 +1,8 @@
 var schedule = require('node-schedule');
 const lxrStockIndexTask = require('../service/lxrIndexService')
 const qmStockIndexTask = require('../service/qiemanIndexService')
-    // const xiCiDailiService = require('../service/xiCiDailiService')
 const stockDailyTask = require('../service/stockDailyDataService')
+const stockWeeklyTask = require('../service/stockHisDataWeeklyService')
 const log = require('../util/logUtil')
 const logUtil = log.logUtil
 
@@ -21,15 +21,16 @@ schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().t
 }))
 
 
-//抓取proxy的数据
-// schedule.scheduleJob('*/10 * * * *', xiCiDailiService.lauchXiciTask().then((val) => {
-//     logUtil.info({ val }, 'lauchXiciTask success')
-// }).catch((err) => {
-//     logUtil.error(err)
-// }))
-
-schedule.scheduleJob('34 22-23 * * *', stockDailyTask.launchStockDailyDataTask.then((val) => {
+//每日允许抓取股票历史价格数据
+schedule.scheduleJob('13 19,23 * * *', stockDailyTask.launchStockDailyDataTask().then((val) => {
     logUtil.info({ val }, 'launchStockDailyDataTask success')
+}).catch((err) => {
+    logUtil.error(err)
+}))
+
+//每周六凌晨1点跑一次按周的任务
+schedule.scheduleJob('13 1 ? ? 6', stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
+    logUtil.info({ val }, 'launchStockHisDataWeekTask success')
 }).catch((err) => {
     logUtil.error(err)
 }))

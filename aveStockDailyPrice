@@ -1,0 +1,69 @@
+[1mdiff --git a/service/getData.js b/service/getData.js[m
+[1mindex b9b8e74..16f01cd 100644[m
+[1m--- a/service/getData.js[m
+[1m+++ b/service/getData.js[m
+[36m@@ -15,9 +15,9 @@[m [mmodule.exports = {[m
+         return http.get(url, null, false)[m
+     },[m
+     //查询腾讯财经前复权股票历史数据[m
+[31m-    queryTTStockHisApi(code) {[m
+[32m+[m[32m    queryTTStockHisApi(code, day) {[m
+         let random = Math.random()[m
+[31m-        url = `http://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,640,qfq&r=${random}`[m
+[32m+[m[32m        url = `http://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,${day},qfq&r=${random}`[m
+         return http.get(url, null, false)[m
+     },[m
+     //查询滚需求每日收盘后的数据-批量查询[m
+[1mdiff --git a/service/stockDailyDataService.js b/service/stockDailyDataService.js[m
+[1mindex cc2325a..8f5dfa7 100644[m
+[1m--- a/service/stockDailyDataService.js[m
+[1m+++ b/service/stockDailyDataService.js[m
+[36m@@ -87,7 +87,14 @@[m [mmodule.exports = {[m
+     async saveStockDailyPrice(stockArr) {[m
+         let saveRes = ''[m
+         try {[m
+[31m-            saveRes = await mongdbUtils.insertMany('stock', 'hisprice', stockArr)[m
+[32m+[m[32m            for (let i = 0; i < stockArr.length; i++) {[m
+[32m+[m[32m                let doc = stockArr[i][m
+[32m+[m[32m                let isExist = await mongdbUtils.queryCollectionCount('stock', 'hisprice', { '_id': doc['_id'] })[m
+[32m+[m[32m                if (isExist == 0) {[m
+[32m+[m[32m                    saveRes = await mongdbUtils.insertOne('stock', 'hisprice', doc)[m
+[32m+[m[32m                    log.info(`${doc['_id']} daily inserted ${saveRes.insertedId}`)[m
+[32m+[m[32m                }[m
+[32m+[m[32m            }[m
+         } catch (err) {[m
+             console.log(err)[m
+         }[m
+[1mdiff --git a/service/stockHisDataService.js b/service/stockHisDataService.js[m
+[1mindex cd7721f..a645439 100644[m
+[1m--- a/service/stockHisDataService.js[m
+[1m+++ b/service/stockHisDataService.js[m
+[36m@@ -57,7 +57,7 @@[m [mmodule.exports = {[m
+             } else {[m
+                 queryCode = `sz${code}`[m
+             }[m
+[31m-            data = await getData.queryTTStockHisApi(queryCode)[m
+[32m+[m[32m            data = await getData.queryTTStockHisApi(queryCode, 640)[m
+             if (data.status == '200') {[m
+                 let retData = data.data[m
+                 if (retData.code !== 0) {[m
+[1mdiff --git a/util/mongdbUtils.js b/util/mongdbUtils.js[m
+[1mindex 8e263cf..0ab3d5f 100644[m
+[1m--- a/util/mongdbUtils.js[m
+[1m+++ b/util/mongdbUtils.js[m
+[36m@@ -20,6 +20,14 @@[m [mmodule.exports = {[m
+         let result = await col.find(query).count()[m
+         await client.close()[m
+         return result[m
+[32m+[m[32m    },[m
+[32m+[m[32m    async insertOne(dbName, collectionName, document) {[m
+[32m+[m[32m        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })[m
+[32m+[m[32m        let db = await client.db(dbName)[m
+[32m+[m[32m        let col = await db.collection(collectionName)[m
+[32m+[m[32m        let result = await col.insertOne(document)[m
+[32m+[m[32m        await client.close()[m
+[32m+[m[32m        return result[m
+     }[m
+ [m
+ }[m
+\ No newline at end of file[m

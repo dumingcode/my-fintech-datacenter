@@ -20,6 +20,14 @@ module.exports = {
         let result = await col.find(query).count()
         await client.close()
         return result
+    },
+    async insertOne(dbName, collectionName, document) {
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let db = await client.db(dbName)
+        let col = await db.collection(collectionName)
+        let result = await col.insertOne(document)
+        await client.close()
+        return result
     }
 
 }

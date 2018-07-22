@@ -15,9 +15,9 @@ module.exports = {
         return http.get(url, null, false)
     },
     //查询腾讯财经前复权股票历史数据
-    queryTTStockHisApi(code) {
+    queryTTStockHisApi(code, day) {
         let random = Math.random()
-        url = `http://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,640,qfq&r=${random}`
+        url = `http://web.ifzq.gtimg.cn/appstock/app/fqkline/get?param=${code},day,,,${day},qfq&r=${random}`
         return http.get(url, null, false)
     },
     //查询滚需求每日收盘后的数据-批量查询

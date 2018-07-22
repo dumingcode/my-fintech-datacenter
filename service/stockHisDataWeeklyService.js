@@ -11,30 +11,25 @@ const getData = require('./getData')
 const mongdbUtils = require('../util/mongdbUtils');
 
 /**
- * 雪球网个股简况抓取
- * pe pb 52周新低
+ * 每周抓取一次历史数据10天内的
  */
 module.exports = {
-    async launchStockHisDataTask() {
-        console.log('start HisStock job')
+    async launchStockHisDataWeekTask() {
+        console.log('start HisStock weekly job')
 
         let stockList = stockData.stockList
         for (let i = 0; i < stockList.length; i++) {
 
             let code = stockList[i]
             let start = moment()
-            let count = await mongdbUtils.queryCollectionCount('stock', 'hisprice', { 'code': code })
-            if (count > 0) {
-                log.info(`${code} is fetched ${count}`)
-                continue
-            }
+
             let hisData = await this.queryHisStockInfo(code)
             if (!hisData) {
                 log.error(`${code} launchStockHisDataTask error`)
                 continue
             }
             let stockArr = await this.parseHisDataToJsonArr(hisData, code)
-            let saveRes = await this.saveStockHisPrice(stockArr)
+            await this.saveStockHisPrice(stockArr)
 
             let end = moment()
             log.info({
@@ -57,7 +52,7 @@ module.exports = {
             } else {
                 queryCode = `sz${code}`
             }
-            data = await getData.queryTTStockHisApi(queryCode, 640)
+            data = await getData.queryTTStockHisApi(queryCode, 10)
             if (data.status == '200') {
                 let retData = data.data
                 if (retData.code !== 0) {
@@ -77,31 +72,40 @@ module.exports = {
     parseHisDataToJsonArr(data, code) {
         let stockArr = []
 
-        //'date', 'open', 'high', 'close', 'low', 'volume', 
-        // 'chg', '%chg', 'ma5', 'ma10', 'ma20', 
-        // 'vma5', 'vma10', 'vma20'
-        data.forEach(element => {
-            let stockInfo = {}
-            let date = element[0]
-            date = date.replace(/-/g, '')
-            stockInfo['_id'] = `${code}-${date}`
-            stockInfo['code'] = code
-            stockInfo['date'] = Number(date)
-            stockInfo['open'] = Number(element[1])
-            stockInfo['high'] = Number(element[2])
-            stockInfo['close'] = Number(element[3])
-            stockInfo['low'] = Number(element[4])
-            stockInfo['amount'] = Number(element[5])
-            stockArr.push(stockInfo)
-        })
+        try {
+            data.forEach(element => {
+                let stockInfo = {}
+                let date = element[0]
+                date = date.replace(/-/g, '')
+                stockInfo['_id'] = `${code}-${date}`
+                stockInfo['code'] = code
+                stockInfo['date'] = Number(date)
+                stockInfo['open'] = Number(element[1])
+                stockInfo['high'] = Number(element[2])
+                stockInfo['close'] = Number(element[3])
+                stockInfo['low'] = Number(element[4])
+                stockInfo['amount'] = Number(element[5])
+                stockArr.push(stockInfo)
+            })
+        } catch (err) {
+            console.log(err)
+            return []
+        }
         return stockArr
     },
     async saveStockHisPrice(stockArr) {
         let saveRes = ''
         try {
-            saveRes = await mongdbUtils.insertMany('stock', 'hisprice', stockArr)
+            for (let i = 0; i < stockArr.length; i++) {
+                let doc = stockArr[i]
+                let isExist = await mongdbUtils.queryCollectionCount('stock', 'hisprice', { '_id': doc['_id'] })
+                if (isExist == 0) {
+                    saveRes = await mongdbUtils.insertOne('stock', 'hisprice', doc)
+                    log.info(`${doc['_id']} weekly inserted ${saveRes.insertedId}`)
+                }
+            }
         } catch (err) {
-            //console.log(err)
+            console.log(err)
         }
         return saveRes
     }
