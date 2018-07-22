@@ -3,6 +3,7 @@ const lxrStockIndexTask = require('../service/lxrIndexService')
 const qmStockIndexTask = require('../service/qiemanIndexService')
 const stockDailyTask = require('../service/stockDailyDataService')
 const stockWeeklyTask = require('../service/stockHisDataWeeklyService')
+const yearMinPriceService = require('../service/process/yearMinPriceService')
 const log = require('../util/logUtil')
 const logUtil = log.logUtil
 
@@ -31,6 +32,13 @@ schedule.scheduleJob('13 19,23 * * *', stockDailyTask.launchStockDailyDataTask()
 //每周六凌晨1点跑一次按周的任务
 schedule.scheduleJob('13 1 ? ? 6', stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
     logUtil.info({ val }, 'launchStockHisDataWeekTask success')
+}).catch((err) => {
+    logUtil.error(err)
+}))
+
+//每日允许抓取股票历史价格数据
+schedule.scheduleJob('11 2,23 * * *', yearMinPriceService.launchStockDailyDataTask().then((val) => {
+    logUtil.info({ val }, 'yearMinPriceService success')
 }).catch((err) => {
     logUtil.error(err)
 }))

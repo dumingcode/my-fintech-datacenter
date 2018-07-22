@@ -28,6 +28,23 @@ module.exports = {
         let result = await col.insertOne(document)
         await client.close()
         return result
+    },
+    //查询52周最低价
+    async queryMinLowPrice(dbName, collectionName, code, date) {
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let db = await client.db(dbName)
+        let col = await db.collection(collectionName)
+        let query = [{
+                '$match': { 'code': code, 'date': { '$gt': date } }
+            },
+            {
+                '$group': { '_id': 'min', min_value: { '$min': '$low' } }
+            }
+        ]
+        let result = await col.aggregate(query)
+        let arr = await result.toArray()
+        await client.close()
+        return arr
     }
 
 }
