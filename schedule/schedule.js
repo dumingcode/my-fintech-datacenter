@@ -30,7 +30,7 @@ schedule.scheduleJob('13 19,23 * * *', stockDailyTask.launchStockDailyDataTask()
 }))
 
 //每周六凌晨1点跑一次按周的任务
-schedule.scheduleJob('13 1 ? ? 6', stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
+schedule.scheduleJob('13 1 ? ? 5', stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
     logUtil.info({ val }, 'launchStockHisDataWeekTask success')
 }).catch((err) => {
     logUtil.error(err)
