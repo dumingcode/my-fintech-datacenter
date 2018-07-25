@@ -5,10 +5,10 @@ const axios = require('axios')
 module.exports = {
     //判断当前是否需要获取理性人指数数据，需要的话执行请求
     async lauchLxrIndexTask() {
-        let latestDealDatePromise = redisUtil.redisGet(config.redisStoreKey.lxrIndexDealDateKey)
+        // let latestDealDatePromise = redisUtil.redisGet(config.redisStoreKey.lxrIndexDealDateKey)
         let lxrIndexDataPromise = this.queryLxrIndexAPI()
         const lxrIndexData = await lxrIndexDataPromise
-        const latestDealDate = await latestDealDatePromise
+            // const latestDealDate = await latestDealDatePromise
             //console.log(lxrIndexData)
             //console.log(latestDealDate)
         if (lxrIndexData.status != 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
@@ -23,6 +23,7 @@ module.exports = {
     queryLxrIndexAPI() {
         return axios.post(config.lixingren.indexUrl, {
             token: config.lixingren.token,
+            date: 'latest',
             stockCodes: config.lixingren.stockIndex,
             metrics: config.lixingren.indexRetPara
         })
