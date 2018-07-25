@@ -23,18 +23,18 @@ schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().t
 
 
 //每日允许抓取股票历史价格数据
-schedule.scheduleJob('13 19,23 * * *', stockDailyTask.launchStockDailyDataTask().then((val) => {
+schedule.scheduleJob('13 17,20 * * *', stockDailyTask.launchStockDailyDataTask().then((val) => {
     logUtil.info({ val }, 'launchStockDailyDataTask success')
 }).catch((err) => {
     logUtil.error(err)
 }))
 
 //每周六凌晨1点跑一次按周的任务
-schedule.scheduleJob('13 1 ? ? 5', stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
-    logUtil.info({ val }, 'launchStockHisDataWeekTask success')
-}).catch((err) => {
-    logUtil.error(err)
-}))
+// schedule.scheduleJob({ hour: 1, minute: 1, dayOfWeek: 6 }, stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
+//     logUtil.info({ val }, 'launchStockHisDataWeekTask success')
+// }).catch((err) => {
+//     logUtil.error(err)
+// }))
 
 //每日允许抓取股票历史价格数据
 schedule.scheduleJob('11 2,23 * * *', yearMinPriceService.launchStockDailyDataTask().then((val) => {
