@@ -23,7 +23,7 @@ schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().t
 
 
 //每日允许抓取股票历史价格数据
-schedule.scheduleJob('13 17,20 * * *', stockDailyTask.launchStockDailyDataTask().then((val) => {
+schedule.scheduleJob('13 16 * * *', stockDailyTask.launchStockDailyDataTask().then((val) => {
     logUtil.info({ val }, 'launchStockDailyDataTask success')
 }).catch((err) => {
     logUtil.error(err)
