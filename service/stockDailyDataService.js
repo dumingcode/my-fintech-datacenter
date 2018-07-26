@@ -73,11 +73,18 @@ module.exports = {
                 stockInfo['code'] = element['code']
                 stockInfo['_id'] = `${stockInfo['code']}-${date}`
                 stockInfo['date'] = Number(date)
-                stockInfo['open'] = Number(element['open'])
-                stockInfo['high'] = Number(element['high'])
+
+                stockInfo['open'] = Number(element['open']) == 0 ? Number(element['close']) : Number(element['open'])
+                stockInfo['high'] = Number(element['high']) == 0 ? Number(element['close']) : Number(element['high'])
                 stockInfo['close'] = Number(element['close'])
-                stockInfo['low'] = Number(element['low'])
-                stockArr.push(stockInfo)
+                stockInfo['low'] = Number(element['low']) == 0 ? Number(element['close']) : Number(element['low'])
+
+                if (Number(stockInfo['low']) > 0) {
+                    stockArr.push(stockInfo)
+                } else {
+                    log.error(`${stockInfo['code']} low is 0 `)
+                }
+
             })
         } catch (err) {
             console.log(err)
