@@ -27,7 +27,7 @@ module.exports = {
                 if (yearLow && yearLow.length > 0) {
                     let data = yearLow[0]
                     log.info(`${stockList[i]}--${Number(start.format('YYYYMMDD'))}---${data.min_value}`)
-                    let stockJson = await redisUtil.redisHGet(config.redisStoreKey.xueQiuStockSet, code)
+                    let stockJson = await redisUtil.redisHGet(config.redisStoreKey.xueQiuStockSet, stockList[i])
                     if (stockJson) {
                         stockJson = JSON.parse(stockJson)
                     } else {
@@ -37,6 +37,9 @@ module.exports = {
                         }
                     }
                     stockJson['low'] = data.min_value
+                    if (data.min_value == 0) {
+                        continue
+                    }
                     await this.saveStockLowPrice(stockList[i], stockJson)
                 }
             } catch (err) {

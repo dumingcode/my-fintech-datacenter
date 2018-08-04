@@ -85,7 +85,8 @@ module.exports = {
                 stockInfo['close'] = Number(element[3])
                 stockInfo['low'] = Number(element[4])
                 stockInfo['amount'] = Number(element[5])
-                stockArr.push(stockInfo)
+                if (stockInfo['low'] > 0)
+                    stockArr.push(stockInfo)
             })
         } catch (err) {
             console.log(err)
