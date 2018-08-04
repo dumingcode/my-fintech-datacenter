@@ -59,3 +59,4 @@ typings/
 # configuration
 config/secureConfig.js
 .vscode
+built/
