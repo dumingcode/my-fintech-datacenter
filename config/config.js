@@ -27,7 +27,9 @@ const config = {
         qmIndexDealDateKey: 'qmIndexDealDate',
         qmIndexDataAll: 'qmIndexDataAll',
         xueQiuStockSet: 'xueQiuStockSet',
-        xiCiProxyList: 'xiCiProxyList'
+        xiCiProxyList: 'xiCiProxyList',
+        citic1V: 'citic1V',
+        citic2V: 'citic2V'
     },
     logConfig: {
         name: 'myfintech-datacenter'
