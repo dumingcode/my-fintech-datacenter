@@ -79,7 +79,7 @@ module.exports = {
      */
     handleStep4() {
         const rl = readline.createInterface({
-            input: fs.createReadStream('/tmp/2J.txt'),
+            input: fs.createReadStream('/tmp/name.txt'),
             crlfDelay: 100
         });
         //处理一级二级行业
