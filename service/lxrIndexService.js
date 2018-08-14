@@ -8,13 +8,13 @@ module.exports = {
         // let latestDealDatePromise = redisUtil.redisGet(config.redisStoreKey.lxrIndexDealDateKey)
         let lxrIndexDataPromise = this.queryLxrIndexAPI()
         const lxrIndexData = await lxrIndexDataPromise
-            // const latestDealDate = await latestDealDatePromise
-            //console.log(lxrIndexData)
-            //console.log(latestDealDate)
+        // const latestDealDate = await latestDealDatePromise
+        //console.log(lxrIndexData)
+        //console.log(latestDealDate)
         if (lxrIndexData.status != 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
-            // if (latestDealDate && lxrIndexData.data[0].date < latestDealDate) {
-            //     return { status: -1, message: "error! lxr data is not latest" }
-            // }
+        // if (latestDealDate && lxrIndexData.data[0].date < latestDealDate) {
+        //     return { status: -1, message: "error! lxr data is not latest" }
+        // }
         await this.saveLxrIndexData(lxrIndexData)
         return { status: 200, message: 'OK' }
     },
@@ -22,15 +22,16 @@ module.exports = {
     //查询理性人指数数据API
     queryLxrIndexAPI() {
         return axios.post(
+            config.lixingren.indexUrl,
             {
-               url:config.lixingren.indexUrl,
-               headers:{'Content-Type':'application/json'}
-        }, {
-            token: config.lixingren.token,
-            date: 'latest',
-            stockCodes: config.lixingren.stockIndex,
-            metrics: config.lixingren.indexRetPara
-        })
+                token: config.lixingren.token,
+                date: 'latest',
+                stockCodes: config.lixingren.stockIndex,
+                metrics: config.lixingren.indexRetPara
+            }, {
+
+                headers: { 'Content-Type': 'application/json' }
+            })
     },
 
     //理性人指数数据redis持久化-
