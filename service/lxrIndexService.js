@@ -21,7 +21,11 @@ module.exports = {
 
     //查询理性人指数数据API
     queryLxrIndexAPI() {
-        return axios.post(config.lixingren.indexUrl, {
+        return axios.post(
+            {
+               url:config.lixingren.indexUrl,
+               headers:{'Content-Type':'application/json'}
+        }, {
             token: config.lixingren.token,
             date: 'latest',
             stockCodes: config.lixingren.stockIndex,
