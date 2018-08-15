@@ -14,7 +14,11 @@ module.exports = {
                 metrics: config.lixingren.indexRetPara
             });
         if (lxrIndexData.status != 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
-        await this.saveLxrIndexData(lxrIndexData)
+        try{
+          await this.saveLxrIndexData(lxrIndexData)
+        }catch(err){
+            console.log(err)
+        }
         return { status: 200, message: 'OK' }
     },
     queryLxrApi(url,data) {
@@ -28,15 +32,15 @@ module.exports = {
         let indexDataAll = {}
         for (let i = 0; i < indexDatas.length; i++) {
             let indexData = indexDatas[i]
-            tempLeastDealDate = String(indexData.date)
+            tempLeastDealDate = String(indexData.date).substr(0,10)
             let mydata = {
                 date: String(indexData.date),
                 cname: indexData.stockCnName,
-                pe: indexData.pe_ttm.weightedAvg,
+                pe: indexData.pe_ttm.y_10.weightedAvg,
                 pe_pos: indexData.pe_ttm.y_10.weightedAvg.latestValPos,
-                pb: indexData.pb.weightedAvg,
+                pb: indexData.pb.y_10.weightedAvg,
                 pb_pos: indexData.pb.y_10.weightedAvg.latestValPos,
-                dividend: indexData.dividend_r.weightedAvg,
+                dividend: indexData.dividend_r.y_10.weightedAvg,
                 pe_min_val: indexData.pe_ttm.y_10.weightedAvg.minVal,
                 pe_chance_val: indexData.pe_ttm.y_10.weightedAvg.chanceVal,
                 pb_min_val: indexData.pb.y_10.weightedAvg.minVal,
