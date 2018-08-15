@@ -11,8 +11,8 @@ lxrStockIndexTask.lauchLxrIndexTask().then((val) => {
     logUtil.error(err)
 })
 
-qiemanIndexService.lauchQiemanIndexTask().then((val) => {
-    logUtil.info({ val }, 'lauchQiemanIndexTask success')
-}).catch((err) => {
-    logUtil.error(err)
-})
+// qiemanIndexService.lauchQiemanIndexTask().then((val) => {
+//     logUtil.info({ val }, 'lauchQiemanIndexTask success')
+// }).catch((err) => {
+//     logUtil.error(err)
+// })
