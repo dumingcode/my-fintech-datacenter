@@ -2,8 +2,8 @@ var schedule = require('node-schedule');
 const lxrStockIndexTask = require('../service/lxrIndexService')
 const qmStockIndexTask = require('../service/qiemanIndexService')
 const stockDailyTask = require('../service/stockDailyDataService')
-const stockWeeklyTask = require('../service/stockHisDataWeeklyService')
-const yearMinPriceService = require('../service/process/yearMinPriceService')
+const DAXIndexService = require('../service/DAXIndexService')
+
 const log = require('../util/logUtil')
 const logUtil = log.logUtil
 
@@ -17,6 +17,13 @@ schedule.scheduleJob('43 21-23 * * *', lxrStockIndexTask.lauchLxrIndexTask().the
 //抓取且慢的数据
 schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().then((val) => {
     logUtil.info({ val }, 'lauchQiemanIndexTask success')
+}).catch((err) => {
+    logUtil.error(err)
+}))
+
+//抓DAX数据
+schedule.scheduleJob('31 07-11 * * *', DAXIndexService.lauchDAXIndexTask().then((val) => {
+    logUtil.info({ val }, 'DAXIndexService success')
 }).catch((err) => {
     logUtil.error(err)
 }))

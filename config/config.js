@@ -14,6 +14,9 @@ const config = {
     xiciDaiLi: {
         proxyArrLength: 5
     },
+    dax30:{
+        indexUrl: 'https://www.etf.com/DAX#overview',
+    },
     redis: {
         port: 6379,
         host: 'localhost',
@@ -29,7 +32,8 @@ const config = {
         xueQiuStockSet: 'xueQiuStockSet',
         xiCiProxyList: 'xiCiProxyList',
         citic1V: 'citic1V',
-        citic2V: 'citic2V'
+        citic2V: 'citic2V',
+        daxIndexDealDateKey: 'daxIndexDealDateKey',
     },
     logConfig: {
         name: 'myfintech-datacenter'
