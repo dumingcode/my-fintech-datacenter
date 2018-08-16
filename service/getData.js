@@ -25,3 +25,4 @@ module.exports = {
         url = `https://gunxueqiu.site/api/bigdata/querySinaStockGet.json?codes=${codes}`
         return http.get(url, null)
     }
+}
