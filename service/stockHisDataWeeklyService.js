@@ -99,13 +99,8 @@ module.exports = {
         try {
             for (let i = 0; i < stockArr.length; i++) {
                 let doc = stockArr[i]
-                let res = await mongdbUtils.updateOne({ '_id': doc['_id'] },doc)
+                let res = await mongdbUtils.updateOne('stock', 'hisprice',{ '_id': doc['_id'] },doc)
                 log.info(`${doc['_id']} dailt  ${res}`)
-                // let isExist = await mongdbUtils.queryCollectionCount('stock', 'hisprice', { '_id': doc['_id'] })
-                // if (isExist == 0) {
-                //     saveRes = await mongdbUtils.insertOne('stock', 'hisprice', doc)
-                //     log.info(`${doc['_id']} weekly inserted ${saveRes.insertedId}`)
-                // }
             }
         } catch (err) {
             console.log(err)
