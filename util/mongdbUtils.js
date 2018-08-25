@@ -29,6 +29,14 @@ module.exports = {
         await client.close()
         return result
     },
+    async updateOne(dbName, collectionName,filter, document,upsertVal=true) {
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let db = await client.db(dbName)
+        let col = await db.collection(collectionName)
+        let result = await col.updateOne(filter,document,{upsert:upsertVal})
+        await client.close()
+        return result
+    },
     //查询52周最低价
     async queryMinLowPrice(dbName, collectionName, code, date) {
         let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })

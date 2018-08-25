@@ -38,8 +38,8 @@ module.exports = {
             })
 
             //延时随机数字
-            let delay = Math.floor(Math.random() * 30) * 1000
-            sleepUtil.sleep(delay < 10000 ? 10000 : delay)
+            let delay = Math.floor(Math.random() * 10) * 1000
+            sleepUtil.sleep(delay < 5000 ? 5000 : delay)
         }
         return { status: 200, message: 'OK' }
     },
@@ -52,7 +52,7 @@ module.exports = {
             } else {
                 queryCode = `sz${code}`
             }
-            data = await getData.queryTTStockHisApi(queryCode, 10)
+            data = await getData.queryTTStockHisApi(queryCode, 15)
             if (data.status == '200') {
                 let retData = data.data
                 if (retData.code !== 0) {
@@ -99,11 +99,13 @@ module.exports = {
         try {
             for (let i = 0; i < stockArr.length; i++) {
                 let doc = stockArr[i]
-                let isExist = await mongdbUtils.queryCollectionCount('stock', 'hisprice', { '_id': doc['_id'] })
-                if (isExist == 0) {
-                    saveRes = await mongdbUtils.insertOne('stock', 'hisprice', doc)
-                    log.info(`${doc['_id']} weekly inserted ${saveRes.insertedId}`)
-                }
+                let res = await mongdbUtils.updateOne({ '_id': doc['_id'] },doc)
+                log.info(`${doc['_id']} dailt  ${res}`)
+                // let isExist = await mongdbUtils.queryCollectionCount('stock', 'hisprice', { '_id': doc['_id'] })
+                // if (isExist == 0) {
+                //     saveRes = await mongdbUtils.insertOne('stock', 'hisprice', doc)
+                //     log.info(`${doc['_id']} weekly inserted ${saveRes.insertedId}`)
+                // }
             }
         } catch (err) {
             console.log(err)

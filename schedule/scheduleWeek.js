@@ -8,8 +8,8 @@ const log = require('../util/logUtil')
 const logUtil = log.logUtil
 
 
-//每周六凌晨1点跑一次按周的任务
-schedule.scheduleJob({ hour: 1, minute: 1, dayOfWeek: 6 }, stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
+//改成每天跑一次
+schedule.scheduleJob('13 23 * * *', stockWeeklyTask.launchStockHisDataWeekTask().then((val) => {
     logUtil.info({ val }, 'launchStockHisDataWeekTask success')
 }).catch((err) => {
     logUtil.error(err)
