@@ -15,7 +15,7 @@ schedule.scheduleJob('43 21-23 * * *', lxrStockIndexTask.lauchLxrIndexTask().the
 }))
 
 //抓取且慢的数据
-schedule.scheduleJob('31 20-23 * * *', qmStockIndexTask.lauchQiemanIndexTask().then((val) => {
+schedule.scheduleJob('31 01-07 * * *', qmStockIndexTask.lauchQiemanIndexTask().then((val) => {
     logUtil.info({ val }, 'lauchQiemanIndexTask success')
 }).catch((err) => {
     logUtil.error(err)

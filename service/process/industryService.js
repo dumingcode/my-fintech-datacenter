@@ -18,7 +18,7 @@ module.exports = {
     handleStep1() {
 
         const rl = readline.createInterface({
-            input: fs.createReadStream('/tmp/citilv1v2.txt'),
+            input: fs.createReadStream('../../data/citilv1v2.txt'),
             crlfDelay: 100
         });
         //处理一级二级行业
@@ -49,7 +49,7 @@ module.exports = {
     },
     handleStep2() {
         const rl1 = readline.createInterface({
-            input: fs.createReadStream('/tmp/1J.txt'),
+            input: fs.createReadStream('../../data/1J.txt'),
             crlfDelay: 100
         });
         //处理一级二级行业
@@ -62,7 +62,7 @@ module.exports = {
     },
     handleStep3() {
         const rl2 = readline.createInterface({
-            input: fs.createReadStream('/tmp/2J.txt'),
+            input: fs.createReadStream('../../data/2J.txt'),
             crlfDelay: 100
         });
         //处理一级二级行业
@@ -79,7 +79,7 @@ module.exports = {
      */
     handleStep4() {
         const rl = readline.createInterface({
-            input: fs.createReadStream('/tmp/name.txt'),
+            input: fs.createReadStream('../../data/name.txt'),
             crlfDelay: 100
         });
         //处理一级二级行业
