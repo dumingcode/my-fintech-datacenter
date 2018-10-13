@@ -14,14 +14,14 @@ module.exports = {
                 metrics: config.lixingren.indexRetPara
             });
         if (lxrIndexData.status != 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
-        try{
-          await this.saveLxrIndexData(lxrIndexData)
-        }catch(err){
+        try {
+            await this.saveLxrIndexData(lxrIndexData)
+        } catch (err) {
             console.log(err)
         }
         return { status: 200, message: 'OK' }
     },
-    queryLxrApi(url,data) {
+    queryLxrApi(url, data) {
         return http.post(url, data, false)
     },
     //理性人指数数据redis持久化-
@@ -32,10 +32,10 @@ module.exports = {
         let indexDataAll = {}
         for (let i = 0; i < indexDatas.length; i++) {
             let indexData = indexDatas[i]
-            tempLeastDealDate = String(indexData.date).substr(0,10)
+            tempLeastDealDate = String(indexData.date).substr(0, 10)
             let mydata = {
                 date: String(indexData.date),
-                cname: indexData.stockCnName,
+                cname: this.queryIndexName(indexData.stockCode),
                 pe: indexData.pe_ttm.y_10.weightedAvg.latestVal,
                 pe_pos: indexData.pe_ttm.y_10.weightedAvg.latestValPos,
                 pb: indexData.pb.y_10.weightedAvg.latestVal,
@@ -54,6 +54,38 @@ module.exports = {
         console.log(JSON.stringify(indexDataAll))
         await redisUtil.redisSet(config.redisStoreKey.lxrIndexDealDateKey, tempLeastDealDate)
         await redisUtil.redisSet(config.redisStoreKey.lxrIndexDataAll, JSON.stringify(indexDataAll))
+
+
+    },
+    queryIndexName(code) {
+        let index = {
+            '399550': '央视50',
+            '399395': '国证有色',
+            '399998': '中证煤炭',
+            '399393': '国证地产',
+            '10002': '国企指数',
+            '000015': '红利指数',
+            '399005': '中小板指',
+            '399006': '创业板',
+            '399673': '创业板50',
+            '399812': '养老产业',
+            '399971': '中证传媒',
+            '399975': '证券公司',
+            '399986': '中证银行',
+            '000827': '中证环保',
+            '000905': '中证500',
+            '000922': '中证红利',
+            '000925': '基本面50',
+            '000978': '医药100',
+            '000991': '全指医药',
+            '10001': '恒生指数',
+            '000300': '沪深300'
+        }
+        let name = index[code]
+        if(!name){
+            name='无'
+        } 
+        return name
 
 
     }
