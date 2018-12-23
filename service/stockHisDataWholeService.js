@@ -11,8 +11,7 @@ const getData = require('./getData')
 const mongdbUtils = require('../util/mongdbUtils');
 
 /**
- * 雪球网个股简况抓取
- * pe pb 52周新低
+ * 一次性抓取个股640个交易日
  */
 module.exports = {
     async launchStockHisDataTask() {

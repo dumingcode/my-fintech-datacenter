@@ -12,7 +12,7 @@ lxrStockIndexTask.lauchLxrIndexTask().then((val) => {
     logUtil.error(err)
 })
 
-
+/**且慢抓取数据 */
 qiemanIndexService.lauchQiemanIndexTask().then((val) => {
     logUtil.info({ val }, 'lauchQiemanIndexTask success')
 }).catch((err) => {

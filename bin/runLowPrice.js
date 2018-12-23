@@ -4,7 +4,7 @@ const yearMinPriceService = require('../service/process/yearMinPriceService')
 const log = require('../util/logUtil')
 const logUtil = log.logUtil
 
-/**理性人指数数据自动处理任务 */
+/**同步所有个股52周最低价 */
 yearMinPriceService.launchStockDailyDataTask().then((val) => {
     logUtil.info({ val }, 'yearMinPriceService success')
 }).catch((err) => {
