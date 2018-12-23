@@ -1,11 +1,4 @@
 const chai = require('chai')
-const expect = chai.expect
-
-const lxrIndexService = require('../service/lxrIndexService')
-const qmIndexService = require('../service/qiemanIndexService')
-const xueqiuStockService = require('../service/xueQiuStockService')
-const xiCiDailiService = require('../service/xiCiDailiService')
-const config = require('../config/config')
 
 
 describe('#data Task', () => {
