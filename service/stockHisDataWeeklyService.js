@@ -61,6 +61,9 @@ module.exports = {
                 }
                 retData = retData['data']
                 let _temp = retData[queryCode]
+                if(code == '000300'){
+                    return _temp['day']
+                }
                 return _temp['qfqday']
             }
         } catch (err) {

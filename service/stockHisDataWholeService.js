@@ -5,7 +5,7 @@ const puppeteer = require('puppeteer');
 const HTMLParser = require('fast-html-parser');
 const moment = require('moment');
 const bunyan = require('bunyan');
-const log = bunyan.createLogger({ name: 'xueQiu' });
+const log = bunyan.createLogger({ name: 'TXStock' });
 const stockData = require('../data/stockList');
 const getData = require('./getData')
 const mongdbUtils = require('../util/mongdbUtils');
@@ -65,6 +65,9 @@ module.exports = {
                 }
                 retData = retData['data']
                 let _temp = retData[queryCode]
+                if(code == '000300'){
+                    return _temp['day']
+                }
                 return _temp['qfqday']
             }
         } catch (err) {
