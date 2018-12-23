@@ -51,7 +51,7 @@ module.exports = {
         let data = null
         try {
             let queryCode = ''
-            if (code.indexOf('6') == 0) {
+            if (code.indexOf('6') == 0 || code == '000300') {
                 queryCode = `sh${code}`
             } else {
                 queryCode = `sz${code}`
