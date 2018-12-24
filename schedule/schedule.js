@@ -1,8 +1,6 @@
 var schedule = require('node-schedule');
 const lxrStockIndexTask = require('../service/lxrIndexService')
 const qmStockIndexTask = require('../service/qiemanIndexService')
-const stockDailyTask = require('../service/stockDailyDataService')
-const DAXIndexService = require('../service/DAXIndexService')
 
 const log = require('../util/logUtil')
 const logUtil = log.logUtil
