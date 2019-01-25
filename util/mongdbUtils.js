@@ -29,11 +29,11 @@ module.exports = {
         await client.close()
         return result
     },
-    async updateOne(dbName, collectionName,filter, document,upsertVal=true) {
+    async updateOne(dbName, collectionName, filter, document, upsertVal = true) {
         let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
-        let result = await col.updateOne(filter,{ $set:document},{upsert:upsertVal})
+        let result = await col.updateOne(filter, { $set: document }, { upsert: upsertVal })
         await client.close()
         return result
     },
@@ -43,13 +43,23 @@ module.exports = {
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let query = [{
-                '$match': { 'code': code, 'date': { '$gt': date } }
-            },
-            {
-                '$group': { '_id': 'min', min_value: { '$min': '$low' } }
-            }
+            '$match': { 'code': code, 'date': { '$gt': date } }
+        },
+        {
+            '$group': { '_id': 'min', min_value: { '$min': '$low' } }
+        }
         ]
         let result = await col.aggregate(query)
+        let arr = await result.toArray()
+        await client.close()
+        return arr
+    },
+    //根据检索条件检索满足条件的股票价格
+    async queryStockPrice(dbName, collectionName, query, option) {
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let db = await client.db(dbName)
+        let col = await db.collection(collectionName)
+        let result = await col.find(query, option)
         let arr = await result.toArray()
         await client.close()
         return arr
