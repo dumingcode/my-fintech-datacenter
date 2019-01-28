@@ -53,6 +53,19 @@ module.exports = {
         let arr = await result.toArray()
         await client.close()
         return arr
+    },
+    //查询一年内的价格数据
+    async queryStockYearPrice(dbName, collectionName, code, date) {
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let db = await client.db(dbName)
+        let col = await db.collection(collectionName)
+        let query = [{
+                '$match': { 'code': code, 'date': { '$gt': date } }
+            }
+        ]
+        let result = await col.find(query).sort( { date: 1 } )
+        await client.close()
+        return result.toArray()
     }
 
 }
