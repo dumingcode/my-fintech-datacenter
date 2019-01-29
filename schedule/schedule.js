@@ -18,18 +18,3 @@ schedule.scheduleJob('31 01-07 * * *', qmStockIndexTask.lauchQiemanIndexTask().t
 }).catch((err) => {
     logUtil.error(err)
 }))
-
-//抓DAX数据
-// schedule.scheduleJob('31 07-11 * * *', DAXIndexService.lauchDAXIndexTask().then((val) => {
-//     logUtil.info({ val }, 'DAXIndexService success')
-// }).catch((err) => {
-//     logUtil.error(err)
-// }))
-
-
-//每日允许抓取股票历史价格数据
-// schedule.scheduleJob('13 16 * * *', stockDailyTask.launchStockDailyDataTask().then((val) => {
-//     logUtil.info({ val }, 'launchStockDailyDataTask success')
-// }).catch((err) => {
-//     logUtil.error(err)
-// }))

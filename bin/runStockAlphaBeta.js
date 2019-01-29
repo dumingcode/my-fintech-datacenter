@@ -1,4 +1,4 @@
-const stockAlphaBetaService = require('../service/process/stockAlphaBetaService')
+const stockAlphaBetaService = require('../service/quant/stockAlphaBetaService')
 
 
 const log = require('../util/logUtil')
