@@ -114,7 +114,7 @@ module.exports = {
             stockRegressionY.push(Number(element.yield))
         })
         if (benchmarkRegressionX.length == 0 || stockRegressionY.length == 0 || benchmarkRegressionX.length != stockRegressionY.length) {
-            return { 'alpha': 0, 'beta': 0, 'rmsd': 0 }
+            return { 'alpha': 0, 'beta': 0, 'r2': 0 }
         }
         const regression = new SimpleLinearRegression(benchmarkRegressionX, stockRegressionY)
 
