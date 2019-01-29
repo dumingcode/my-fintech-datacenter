@@ -1,11 +1,9 @@
-const sleepUtil = require('../../util/sleep')
 const config = require('../../config/config')
-const moment = require('moment');
-const bunyan = require('bunyan');
-const log = bunyan.createLogger({ name: '52low' });
-const stockData = require('../../data/stockList');
-const getData = require('../getData')
-const mongdbUtils = require('../../util/mongdbUtils');
+const moment = require('moment')
+const bunyan = require('bunyan')
+const log = bunyan.createLogger({ name: '52low' })
+const stockData = require('../../data/stockList')
+const mongdbUtils = require('../../util/mongdbUtils')
 const redisUtil = require('../../util/redisUtil')
 
 /**

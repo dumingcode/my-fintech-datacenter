@@ -1,14 +1,10 @@
-const redisUtil = require('../util/redisUtil')
 const sleepUtil = require('../util/sleep')
-const config = require('../config/config')
-const puppeteer = require('puppeteer');
-const HTMLParser = require('fast-html-parser');
-const moment = require('moment');
-const bunyan = require('bunyan');
-const log = bunyan.createLogger({ name: 'TXStock' });
-const stockData = require('../data/stockList');
+const moment = require('moment')
+const bunyan = require('bunyan')
+const log = bunyan.createLogger({ name: 'TXStock' })
+const stockData = require('../data/stockList')
 const getData = require('./getData')
-const mongdbUtils = require('../util/mongdbUtils');
+const mongdbUtils = require('../util/mongdbUtils')
 
 /**
  * 一次性抓取个股640个交易日
