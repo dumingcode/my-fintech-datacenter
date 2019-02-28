@@ -5,6 +5,7 @@ const log = bunyan.createLogger({ name: 'weekly stock' })
 const stockData = require('../data/stockList')
 const getData = require('./getData')
 const mongdbUtils = require('../util/mongdbUtils')
+const config = require('../config/config')
 
 /**
  * 每周抓取一次历史数据10天内的
@@ -48,7 +49,7 @@ module.exports = {
             } else {
                 queryCode = `sz${code}`
             }
-            data = await getData.queryTTStockHisApi(queryCode, 15)
+            data = await getData.queryTTStockHisApi(queryCode, config.dailyBackDays)
             if (data.status == '200') {
                 let retData = data.data
                 if (retData.code !== 0) {
@@ -99,7 +100,7 @@ module.exports = {
             for (let i = 0; i < stockArr.length; i++) {
                 let doc = stockArr[i]
                 let res = await mongdbUtils.updateOne('stock', 'hisprice',{ '_id': doc['_id'] },doc)
-                log.info(`${doc['_id']} dailt  ${res}`)
+                //log.info(`${doc['_id']} dailt  ${res}`)
             }
         } catch (err) {
             console.log(err)

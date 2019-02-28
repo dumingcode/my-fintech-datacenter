@@ -41,7 +41,8 @@ const config = {
     mongoDb: {
         url: 'mongodb://localhost:27017'
     },
-    dailyStockBatchNum: 30
+    dailyStockBatchNum: 30,
+    dailyBackDays: 260 //历史回溯天数(交易日)
 }
 
 module.exports = config
