@@ -35,7 +35,7 @@ module.exports = {
                         }
                     }
                     stockJson['low'] = data.min_value
-                    stockJson['lowGenDate'] =  Number(moment().format('YYYYMMDD HH:mm:ss'))
+                    stockJson['lowGenDate'] =  moment().format('YYYYMMDD HH:mm:ss')
                     if (data.min_value == 0) {
                         continue
                     }
