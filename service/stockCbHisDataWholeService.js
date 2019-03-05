@@ -13,7 +13,7 @@ module.exports = {
     async launchStockHisDataTask() {
         console.log('start CbHisStock job')
 
-        let stockList = stockData.stockList
+        let stockList = stockData.cbList
         for (let i = 0; i < stockList.length; i++) {
 
             let code = stockList[i]
