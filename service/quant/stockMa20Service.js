@@ -30,7 +30,7 @@ module.exports = {
                 stockPriceArr.forEach((element) => {
                     ma20 += element.close
                 })
-                ma20 = ma20 / 20
+                ma20 =(ma20 / 20).toFixed(2)
                 log.info(`${stockCode}-----${ma20}`)
                 await this.saveStockMa20Price(stockCode, ma20)
             } catch (err) {

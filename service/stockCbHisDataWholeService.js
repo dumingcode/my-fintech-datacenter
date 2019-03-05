@@ -86,8 +86,8 @@ module.exports = {
             stockInfo['code'] = code
             stockInfo['date'] = Number(date)
             stockInfo['open'] = Number(element[1])
-            stockInfo['high'] = Number(element[2])
-            stockInfo['close'] = Number(element[3])
+            stockInfo['close'] = Number(element[2])
+            stockInfo['high'] = Number(element[3])
             stockInfo['low'] = Number(element[4])
             stockInfo['amount'] = Number(element[5])
             stockArr.push(stockInfo)
