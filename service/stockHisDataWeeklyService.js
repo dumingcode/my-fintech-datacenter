@@ -44,7 +44,7 @@ module.exports = {
         let data = null
         try {
             let queryCode = ''
-            if (code.indexOf('6') == 0 || code == '000300') {
+            if (code.indexOf('6') == 0 || code == '000300'|| code.indexOf('11') == 0) {
                 queryCode = `sh${code}`
             } else {
                 queryCode = `sz${code}`
@@ -58,7 +58,7 @@ module.exports = {
                 }
                 retData = retData['data']
                 let _temp = retData[queryCode]
-                if(code == '000300'){
+                if(code == '000300'|| code.indexOf('11') == 0 || code.indexOf('12') == 0){
                     return _temp['day']
                 }
                 return _temp['qfqday']
