@@ -6,7 +6,7 @@ const log = require('../util/logUtil')
 const logUtil = log.logUtil
 
 /**理性人指数数据自动处理任务 */
-schedule.scheduleJob('43 21-23 * * *', lxrStockIndexTask.lauchLxrIndexTask().then((val) => {
+schedule.scheduleJob('13 17-21 * * *', lxrStockIndexTask.lauchLxrIndexTask().then((val) => {
     logUtil.info({ val }, 'lauchLxrIndexTask success')
 }).catch((err) => {
     logUtil.error(err)
