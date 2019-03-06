@@ -2,7 +2,7 @@ const config = require('../../config/config')
 const moment = require('moment')
 const bunyan = require('bunyan')
 const log = bunyan.createLogger({ name: 'ma20' })
-const stockData = require('../../data/convertBond')
+const stockData = require('../../data/stockList')
 const mongdbUtils = require('../../util/mongdbUtils')
 const redisUtil = require('../../util/redisUtil')
 
@@ -13,7 +13,7 @@ const redisUtil = require('../../util/redisUtil')
 module.exports = {
     async launchStockMa20DailyDataTask() {
         console.log('start ma20 job')
-        let stockList = stockData.cbList
+        let stockList = stockData.stockList
         for (let i = 0; i < stockList.length; i++) {
             let stockCode = stockList[i]
             try {
