@@ -17,7 +17,7 @@ schedule.scheduleJob('13 1 * * *', stockAlphaBetaService.launchStockAlphaBetaTas
 
 
 // 每天计算一次 转债的ma20
-schedule.scheduleJob('13 06,08 * * *', stockMa20DataService.launchStockMa20DailyDataTask().then((val) => {
+schedule.scheduleJob('33 06,08,16,18 * * *', stockMa20DataService.launchStockMa20DailyDataTask().then((val) => {
     logUtil.info({ val }, 'launchStockMa20DailyDataTask success')
 }).catch((err) => {
     logUtil.error(err)
