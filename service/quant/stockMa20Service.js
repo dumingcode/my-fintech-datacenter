@@ -23,7 +23,7 @@ module.exports = {
                 let stockPriceArr = await mongdbUtils.queryStockPrice('stock', 'hisprice', queryCondition, quertOption)
                 if (!stockPriceArr || stockPriceArr.length <= 0) {
                     log.info(`ma20----${stockCode})}--queryStockPrice return empty`)
-                    return {}
+                    continue
                 }
 
                 let ma20 = 0
