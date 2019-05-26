@@ -39,7 +39,7 @@ const config = {
         name: 'myfintech-datacenter'
     },
     mongoDb: {
-        url: 'mongodb://localhost:27017'
+        url: `mongodb://stock:${secureConfig.redisPasswd}@172.17.188.91:27017,172.17.24.253:27017`
     },
     dailyStockBatchNum: 30,
     dailyBackDays: 260 //历史回溯天数(交易日)
