@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient
+const ReadPreference = require('mongodb').ReadPreference
 const config = require('../config/config')
 const mongoDbConfig = config.mongoDb
 
