@@ -10,7 +10,7 @@ module.exports = {
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.insertMany(documents, { ordered: false })
-        await client.close()
+        await client.close(true)
         return result
     },
     async queryCollectionCount(dbName, collectionName, query) {
@@ -18,7 +18,7 @@ module.exports = {
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.find(query).count()
-        await client.close()
+        await client.close(true)
         return result
     },
     async insertOne(dbName, collectionName, document) {
@@ -26,7 +26,7 @@ module.exports = {
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.insertOne(document)
-        await client.close()
+        await client.close(true)
         return result
     },
     async updateOne(dbName, collectionName, filter, document, upsertVal = true) {
@@ -34,7 +34,7 @@ module.exports = {
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.updateOne(filter, { $set: document }, { upsert: upsertVal })
-        await client.close()
+        await client.close(true)
         return result
     },
     //查询52周最低价
@@ -51,7 +51,7 @@ module.exports = {
         ]
         let result = await col.aggregate(query)
         let arr = await result.toArray()
-        await client.close()
+        await client.close(true)
         return arr
     },
     //根据检索条件检索满足条件的股票价格
@@ -61,7 +61,7 @@ module.exports = {
         let col = await db.collection(collectionName)
         let result = await col.find(query, option)
         let arr = await result.toArray()
-        await client.close()
+        await client.close(true)
         return arr
     },
     //查询一年内的价格数据
@@ -74,7 +74,7 @@ module.exports = {
             }
         ]
         let result = await col.find(query).sort( { date: 1 } )
-        await client.close()
+        await client.close(true)
         return result.toArray()
     }
 
