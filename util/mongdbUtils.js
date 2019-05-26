@@ -6,7 +6,7 @@ const mongoDbConfig = config.mongoDb
 
 module.exports = {
     async insertMany(dbName, collectionName, documents) {
-        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.insertMany(documents, { ordered: false })
@@ -14,7 +14,7 @@ module.exports = {
         return result
     },
     async queryCollectionCount(dbName, collectionName, query) {
-        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.find(query).count()
@@ -22,7 +22,7 @@ module.exports = {
         return result
     },
     async insertOne(dbName, collectionName, document) {
-        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.insertOne(document)
@@ -30,7 +30,7 @@ module.exports = {
         return result
     },
     async updateOne(dbName, collectionName, filter, document, upsertVal = true) {
-        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.updateOne(filter, { $set: document }, { upsert: upsertVal })
@@ -39,7 +39,7 @@ module.exports = {
     },
     //查询52周最低价
     async queryMinLowPrice(dbName, collectionName, code, date) {
-        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let query = [{
@@ -56,7 +56,7 @@ module.exports = {
     },
     //根据检索条件检索满足条件的股票价格
     async queryStockPrice(dbName, collectionName, query, option) {
-        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let result = await col.find(query, option)
@@ -66,7 +66,7 @@ module.exports = {
     },
     //查询一年内的价格数据
     async queryStockYearPrice(dbName, collectionName, code, date) {
-        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true })
+        let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
         let query = [{
