@@ -10,7 +10,7 @@ module.exports = {
         let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
-        let result = await col.insertMany(documents, { ordered: false })
+        let result = await col.insertMany(documents, { ordered: false, w:'1',wtimeout:5  })
         await client.close(true)
         return result
     },
@@ -26,7 +26,7 @@ module.exports = {
         let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
-        let result = await col.insertOne(document)
+        let result = await col.insertOne(document, { w:'1', wtimeout:5 })
         await client.close(true)
         return result
     },
@@ -34,7 +34,7 @@ module.exports = {
         let client = await MongoClient.connect(mongoDbConfig.url, { useNewUrlParser: true ,readPreference: ReadPreference.PRIMARY})
         let db = await client.db(dbName)
         let col = await db.collection(collectionName)
-        let result = await col.updateOne(filter, { $set: document }, { upsert: upsertVal })
+        let result = await col.updateOne(filter, { $set: document }, { upsert: upsertVal,w:'1',wtimeout:5 })
         await client.close(true)
         return result
     },
