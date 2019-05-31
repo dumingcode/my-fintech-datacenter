@@ -39,7 +39,7 @@ const config = {
         name: 'myfintech-datacenter'
     },
     mongoDb: {
-        url: `mongodb://stock:${secureConfig.redisPasswd}@172.17.188.91:27017,172.17.24.253:27017,172.17.24.253:27018/stock?replicaSet=rs0&w=1&wtimeoutMS=2000&maxIdleTimeMS=2000&readPreference=secondaryPreferred`
+        url: `mongodb://stock:${secureConfig.redisPasswd}@172.17.188.91:27017/stock`
     },
     dailyStockBatchNum: 30,
     dailyBackDays: 260 //历史回溯天数(交易日)
