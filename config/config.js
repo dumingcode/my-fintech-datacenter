@@ -12,7 +12,8 @@ const config = {
         stockIndex: ['CSPSADRP.CI', 'HSI.HI', 'HSCEI.HI', '950090.SH', 'SPX.GI', '930782.CSI', 'NDX.GI']
     },
     house: {
-        url: 'http://zjw.beijing.gov.cn/bjjs/fwgl/fdcjy/fwjy/index.shtml'
+        url: 'http://zjw.beijing.gov.cn/bjjs/fwgl/fdcjy/fwjy/index.shtml',
+        url2: 'http://120.52.185.46/shh/portal/bjjs2016/index_new.aspx'
     },
     xiciDaiLi: {
         proxyArrLength: 5
