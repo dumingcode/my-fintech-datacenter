@@ -11,7 +11,7 @@ const redisUtil = require('../../util/redisUtil')
  *
  */
 module.exports = {
-  async launchStockMa20DailyDataTask() {
+  async launchStockMa20DailyDataTask () {
     console.log('start ma20 job')
     const stockList = stockData.cbList
     for (let i = 0; i < stockList.length; i++) {
@@ -56,7 +56,7 @@ module.exports = {
     return { status: 200, message: 'OK' }
   },
   // 保存ma20到redis
-  async saveStockMa20Price(code, ma20, ma5, ma10) {
+  async saveStockMa20Price (code, ma20, ma5, ma10) {
     let stockJson = await redisUtil.redisHGet(config.redisStoreKey.xueQiuStockSet, code)
     if (stockJson) {
       stockJson = JSON.parse(stockJson)

@@ -1,4 +1,5 @@
-const chai = require('chai')
+/* eslint-env mocha */
+// const chai = require('chai')
 
 describe('#data Task', () => {
   it('#xiCiDailiIP ret right data', function (done) {

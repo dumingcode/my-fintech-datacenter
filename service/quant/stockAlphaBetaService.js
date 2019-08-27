@@ -12,7 +12,7 @@ const redisUtil = require('../../util/redisUtil')
  *
  */
 module.exports = {
-  async launchStockAlphaBetaTask() {
+  async launchStockAlphaBetaTask () {
     console.log('start stock alpha&beta job')
     const stockList = stockData.stockList
     // 计算沪深300涨幅
@@ -30,7 +30,7 @@ module.exports = {
     return { status: 200, message: 'OK' }
   },
   // 计算基准指数沪深300股价特定阶段里每天的涨跌幅
-  async calcStockBenchmarkPriceYield(stockCode = '000300') {
+  async calcStockBenchmarkPriceYield (stockCode = '000300') {
     const twoYearBefore = Number(moment().subtract(728, 'days').format('YYYYMMDD'))
     const queryCondition = { code: stockCode, date: { $gt: twoYearBefore } }
     const quertOption = { sort: [['_id', 1]] }
@@ -51,7 +51,7 @@ module.exports = {
     return benchmark
   },
   // 计算股价特定阶段里每天的涨跌幅
-  async calcStockPriceYield(stockCode, benchmark) {
+  async calcStockPriceYield (stockCode, benchmark) {
     const twoYearBefore = Number(moment().subtract(728, 'days').format('YYYYMMDD'))
     const oneYearBefore = Number(moment().subtract(364, 'days').format('YYYYMMDD'))
     const halfYearBefore = Number(moment().subtract(180, 'days').format('YYYYMMDD'))
@@ -98,7 +98,7 @@ module.exports = {
     return { twoYearsAgo: this.calcStockAlphaBeta(benchmark, twoYearYield), oneYearAgo: this.calcStockAlphaBeta(benchmark, yearYield), '180daysAgo': this.calcStockAlphaBeta(benchmark, halfYearYield), '90daysAgo': this.calcStockAlphaBeta(benchmark, ninetyDaysYield), '30daysAgo': this.calcStockAlphaBeta(benchmark, thirtyDaysYield) }
   },
   // 具体调用回归函数计算alpha beta
-  calcStockAlphaBeta(benchmark, targetStockArr) {
+  calcStockAlphaBeta (benchmark, targetStockArr) {
     const benchmarkRegressionX = []
     const stockRegressionY = []
     targetStockArr.forEach((element) => {
@@ -118,7 +118,7 @@ module.exports = {
     return { alpha: alpha, beta: beta, r2: rmsd }
   },
   // 将计算结果存储到redis中
-  async saveStockAlphaBeta(stockCode, alphaBetaData) {
+  async saveStockAlphaBeta (stockCode, alphaBetaData) {
     let stockJson = await redisUtil.redisHGet(config.redisStoreKey.xueQiuStockSet, stockCode)
     if (stockJson) {
       stockJson = JSON.parse(stockJson)
@@ -133,6 +133,7 @@ module.exports = {
     stockJson.alphaBeta180day = JSON.stringify(alphaBetaData['180daysAgo'])
     stockJson.alphaBeta90day = JSON.stringify(alphaBetaData['90daysAgo'])
     stockJson.alphaBeta30day = JSON.stringify(alphaBetaData['30daysAgo'])
-    return await redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, stockCode, JSON.stringify(stockJson))
+    const x = await redisUtil.redisHSet(config.redisStoreKey.xueQiuStockSet, stockCode, JSON.stringify(stockJson))
+    return x
   }
 }

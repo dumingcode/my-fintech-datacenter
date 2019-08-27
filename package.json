@@ -7,6 +7,9 @@
     "test": "standard && mocha -t 30000 ./test/tasktest.js --exit",
     "test-cov": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- --timeout 30000 -R spec ./test/  --exit"
   },
+  "env": {
+    "mocha": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dumingcode/my-fintech-datacenter.git"
