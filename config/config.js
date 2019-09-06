@@ -3,8 +3,10 @@ const config = {
 
   lixingren: {
     indexUrl: 'https://open.lixinger.com/api/a/indice/fundamental',
+    indexSampleUrl: 'https://open.lixinger.com/api/a/indice/samples',
     token: secureConfig.lxrToken,
     indexRetPara: ['pe_ttm.y_10.weightedAvg', 'pb.y_10.weightedAvg'], // 需要的返回值
+    stockIndexSample: ['000010', '000852', '000922', '000300', '000905', '399812'],
     stockIndex: ['399550', '399395', '399998', '399393', '10002', '000015', '399005', '399006', '399673', '399812', '399971', '399975', '399986', '000827', '000905', '000922', '000925', '000978', '000991', '10001', '10002', '000300', '399701', '000978', '000991', '000932'] // 需要请求的指数
   },
   qieman: {

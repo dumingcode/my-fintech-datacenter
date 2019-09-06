@@ -53,14 +53,18 @@ module.exports = {
   },
   redisSmembers (key) {
     const redis = new Redis(redisConfig)
-    return redis.smembers(key).then((val) => {
-      return val
-    }).then((val) => {
-      redis.disconnect()
-      return val
-    }).catch((err) => {
-      console.log(err)
-      return null
-    })
+    return redis
+      .smembers(key)
+      .then(val => {
+        return val
+      })
+      .then(val => {
+        redis.disconnect()
+        return val
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
   }
 }
