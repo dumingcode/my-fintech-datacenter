@@ -27,7 +27,10 @@ module.exports = {
   },
   async saveLxrIndexSampleData (sampleData) {
     try {
+      const now = moment()
+      const date = now.format('YYYYMMDD')
       sampleData.forEach(async (sample) => {
+        sample.date = date
         await mongdbUtils.updateOne('stock', 'indexSample', { _id: sample.stockCode }, sample)
       })
     } catch (err) {
