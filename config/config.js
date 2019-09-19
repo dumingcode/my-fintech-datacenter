@@ -4,6 +4,7 @@ const config = {
   lixingren: {
     indexUrl: 'https://open.lixinger.com/api/a/indice/fundamental',
     indexSampleUrl: 'https://open.lixinger.com/api/a/indice/samples',
+    industryUrl: 'https://open.lixinger.com/api/a/industry',
     token: secureConfig.lxrToken,
     indexRetPara: ['pe_ttm.y_10.weightedAvg', 'pb.y_10.weightedAvg'], // 需要的返回值
     stockIndexSample: ['000010', '000852', '000922', '000300', '000905', '399812'],
@@ -39,6 +40,8 @@ const config = {
     xiCiProxyList: 'xiCiProxyList',
     citic1V: 'citic1V',
     citic2V: 'citic2V',
+    gz1V: 'gz1V',
+    gz2V: 'gz2V',
     daxIndexDealDateKey: 'daxIndexDealDateKey'
   },
   logConfig: {
