@@ -2,6 +2,7 @@ const config = require('../../config/config')
 const moment = require('moment')
 const http = require('../../util/http')
 const mongdbUtils = require('../../util/mongdbUtils')
+const redisUtil = require('../../util/redisUtil')
 /**
  * 获取最近的指数成分股
  *
@@ -22,6 +23,9 @@ module.exports = {
     } catch (err) {
       console.log(err)
     }
+    const date = moment().format('YYYY-MM-DD')
+    await redisUtil.redisSet('indexRefressDate', date)
+    console.log('launchStockIndexSampleTask-' + date)
     console.log('end stock index sample job')
     return { status: 200, message: 'OK' }
   },
