@@ -78,6 +78,7 @@ module.exports = {
       }
       const arr = indData.data
       arr.forEach(async element => {
+        element.date = moment().format('YYYY-MM-DD')
         await mongdbUtils.updateOne('stock', 'industrySample', { _id: element.stockCode }, element)
       })
     } catch (err) {
