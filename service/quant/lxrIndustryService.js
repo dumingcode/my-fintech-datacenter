@@ -51,6 +51,7 @@ module.exports = {
     const lxrIndexData = await http.post(config.lixingren.industrySampleUrl,
       {
         token: config.lixingren.token,
+        date: 'latest',
         stockCodes: arr.map((val) => { return val.stockCode })
       }, false)
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg }
