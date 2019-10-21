@@ -10,11 +10,10 @@ const redisUtil = require('../../util/redisUtil')
 module.exports = {
   async launchStockIndexSampleTask () {
     console.log('start stock index sample job')
-    const now = moment()
     const lxrIndexData = await http.post(config.lixingren.indexSampleUrl,
       {
         token: config.lixingren.token,
-        date: now.format('YYYY-MM-DD'),
+        date: 'latest',
         stockCodes: config.lixingren.stockIndexSample
       }, false)
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
