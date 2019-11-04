@@ -64,7 +64,7 @@ module.exports = {
       }
       const arr = indData.data
       arr.forEach(async element => {
-        const val = `${element.stockCode}|${element.cnName}`
+        const val = `${element.stockCode}|${element.name}`
         await redisUtil.redisSadd(redisKey, val)
       })
     } catch (err) {
