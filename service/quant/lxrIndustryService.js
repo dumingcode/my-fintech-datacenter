@@ -15,13 +15,13 @@ module.exports = {
       console.log(levelTwoData)
       // await this.saveLxrIndustryData(levelTwoData, config.redisStoreKey.gz1V)
       const levelTwoSampleData = await this.queryLxrIndustrySampleData(levelTwoData)
-      this.saveLxrIndustrySampleData(levelTwoSampleData.constituentStockCodes)
+      this.saveLxrIndustrySampleData(levelTwoSampleData)
       console.log(levelTwoSampleData)
       const levelThreeData = await this.queryLxrIndustryData('three')
       console.log(levelThreeData)
       // await this.saveLxrIndustryData(levelThreeData, config.redisStoreKey.gz2V)
       const levelThreeSampleData = await this.queryLxrIndustrySampleData(levelThreeData)
-      this.saveLxrIndustrySampleData(levelThreeSampleData.constituentStockCodes)
+      this.saveLxrIndustrySampleData(levelThreeSampleData)
       console.log(levelThreeSampleData)
       const date = moment().format('YYYY-MM-DD')
       await redisUtil.redisSet('industryRefressDate', date)
@@ -55,7 +55,7 @@ module.exports = {
         stockCodes: arr.map((val) => { return val.stockCode })
       }, false)
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg }
-    return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg, data: lxrIndexData.data.data }
+    return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg, data: lxrIndexData.data.data.constituentStockCodes }
   },
   async saveLxrIndustryData (indData, redisKey) {
     try {
