@@ -55,7 +55,7 @@ module.exports = {
         stockCodes: arr.map((val) => { return val.stockCode })
       }, false)
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg }
-    return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg, data: lxrIndexData.data.data.constituentStockCodes }
+    return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg, data: lxrIndexData.data.data }
   },
   async saveLxrIndustryData (indData, redisKey) {
     try {
@@ -79,6 +79,9 @@ module.exports = {
       const arr = indData.data
       arr.forEach(async element => {
         element.date = moment().format('YYYY-MM-DD')
+        // element.samples = Object.assign({}, element.constituentStockCodes)
+        element.samples = JSON.parse(JSON.stringify(element.constituentStockCodes))
+        delete element.constituentStockCodes
         await mongdbUtils.updateOne('stock', 'industrySample', { _id: element.stockCode }, element)
       })
     } catch (err) {

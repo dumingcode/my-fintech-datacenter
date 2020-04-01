@@ -18,7 +18,7 @@ module.exports = {
       }, false)
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
     try {
-      await this.saveLxrIndexSampleData(lxrIndexData.data.data.constituentStockCodes)
+      await this.saveLxrIndexSampleData(lxrIndexData.data.data)
     } catch (err) {
       console.log(err)
     }
@@ -34,6 +34,9 @@ module.exports = {
       const date = now.format('YYYYMMDD')
       sampleData.forEach(async (sample) => {
         sample.date = date
+        // sample.samples = Object.assign({}, sample.constituentStockCodes)
+        sample.samples = JSON.parse(JSON.stringify(sample.constituentStockCodes))
+        delete sample.constituentStockCodes
         await mongdbUtils.updateOne('stock', 'indexSample', { _id: sample.stockCode }, sample)
       })
     } catch (err) {
