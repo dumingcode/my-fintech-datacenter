@@ -15,13 +15,13 @@ module.exports = {
       console.log(levelTwoData)
       // await this.saveLxrIndustryData(levelTwoData, config.redisStoreKey.gz1V)
       const levelTwoSampleData = await this.queryLxrIndustrySampleData(levelTwoData)
-      this.saveLxrIndustrySampleData(levelTwoSampleData)
+      this.saveLxrIndustrySampleData(levelTwoSampleData.constituentStockCodes)
       console.log(levelTwoSampleData)
       const levelThreeData = await this.queryLxrIndustryData('three')
       console.log(levelThreeData)
       // await this.saveLxrIndustryData(levelThreeData, config.redisStoreKey.gz2V)
       const levelThreeSampleData = await this.queryLxrIndustrySampleData(levelThreeData)
-      this.saveLxrIndustrySampleData(levelThreeSampleData)
+      this.saveLxrIndustrySampleData(levelThreeSampleData.constituentStockCodes)
       console.log(levelThreeSampleData)
       const date = moment().format('YYYY-MM-DD')
       await redisUtil.redisSet('industryRefressDate', date)
@@ -36,7 +36,7 @@ module.exports = {
     const lxrIndexData = await http.post(config.lixingren.industryUrl,
       {
         token: config.lixingren.token,
-        source: 'gz',
+        source: 'cni',
         level: level_
       }, false)
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.data.code, message: lxrIndexData.data.msg }

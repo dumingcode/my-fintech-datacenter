@@ -2,10 +2,10 @@ const secureConfig = require('./secureConfig')
 const config = {
 
   lixingren: {
-    indexUrl: 'https://open.lixinger.com/api/a/indice/fundamental',
-    indexSampleUrl: 'https://open.lixinger.com/api/a/indice/samples',
+    indexUrl: 'https://open.lixinger.com/api/a/index/fundamental',
+    indexSampleUrl: 'https://open.lixinger.com/api/a/index/constituents',
     industryUrl: 'https://open.lixinger.com/api/a/industry',
-    industrySampleUrl: 'https://open.lixinger.com/api/a/industry/samples/gz',
+    industrySampleUrl: 'https://open.lixinger.com/api/a/industry/constituents/cni',
     token: secureConfig.lxrToken,
     indexRetPara: ['pe_ttm.y_10.weightedAvg', 'pb.y_10.weightedAvg'], // 需要的返回值
     stockIndexSample: ['000010', '000852', '000922', '000300', '000905', '399812'],

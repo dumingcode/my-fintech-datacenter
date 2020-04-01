@@ -18,7 +18,7 @@ module.exports = {
       }, false)
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
     try {
-      await this.saveLxrIndexSampleData(lxrIndexData.data.data)
+      await this.saveLxrIndexSampleData(lxrIndexData.data.data.constituentStockCodes)
     } catch (err) {
       console.log(err)
     }

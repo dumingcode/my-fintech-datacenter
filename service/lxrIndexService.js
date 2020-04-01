@@ -10,7 +10,7 @@ module.exports = {
         token: config.lixingren.token,
         date: 'latest',
         stockCodes: config.lixingren.stockIndex,
-        metrics: config.lixingren.indexRetPara
+        metricsList: config.lixingren.indexRetPara
       })
     if (lxrIndexData.status !== 200) return { status: lxrIndexData.status, message: lxrIndexData.statusText }
     try {
