@@ -50,7 +50,9 @@ module.exports = {
     const indexDataAll = {}
     for (let i = 0; i < indexDatas.length; i++) {
       const indexData = indexDatas[i]
-      tempLeastDealDate = String(indexData.date).substr(0, 10)
+      if (!tempLeastDealDate) {
+        tempLeastDealDate = String(indexData.date).substr(0, 10)
+      }
       const mydata = {
         date: String(indexData.date),
         cname: this.queryIndexName(indexData.stockCode),
