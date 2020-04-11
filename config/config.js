@@ -14,12 +14,12 @@ const config = {
   lixingrenHk: {
     indexUrl: 'https://open.lixinger.com/api/h/index/fundamental',
     stockIndex: ['HSCAIT', 'HSCEI', 'HSI', 'HSMSI'],
-    indexRetPara: ['pe_ttm.y_10.weightedAvg', 'pb.y_10.weightedAvg'], // 需要的返回值
+    indexRetPara: ['pe_ttm.y_10.weightedAvg', 'pb.y_10.weightedAvg'] // 需要的返回值
   },
   lixingrenUSA: {
     indexUrl: 'https://open.lixinger.com/api/us/index/fundamental',
     stockIndex: ['.INX'],
-    indexRetPara: ['pe_ttm.y_10.weightedAvg', 'pb.y_10.weightedAvg'], // 需要的返回值
+    indexRetPara: ['pe_ttm.y_10.weightedAvg', 'pb.y_10.weightedAvg'] // 需要的返回值
   },
   qieman: {
     indexUrl: 'https://qieman.com/idx-eval',
