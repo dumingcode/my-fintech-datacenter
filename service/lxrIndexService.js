@@ -119,7 +119,8 @@ module.exports = {
       HSCAIT: '恒生A股行业龙头指数',
       HSCEI: '恒生中国企业指数',
       HSI: '恒生指数',
-      HSMSI: '恒生综合中小型股指数'
+      HSMSI: '恒生综合中小型股指数',
+      399324: '深证红利'
     }
     let name = index[code]
     if (!name) {
