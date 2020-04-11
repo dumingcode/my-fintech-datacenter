@@ -33,17 +33,19 @@ module.exports = {
     if (lxrUSAIndexData.status !== 200) return { status: lxrUSAIndexData.status, message: lxrUSAIndexData.statusText }
 
     try {
-      await this.saveLxrIndexData(lxrIndexData)
-      await this.saveLxrIndexData(lxrHkIndexData)
-      await this.saveLxrIndexData(lxrUSAIndexData)
+      let indexArr = lxrIndexData.data.data
+      indexArr = indexArr.concat(lxrHkIndexData.data.data)
+      indexArr = indexArr.concat(lxrUSAIndexData.data.data)
+
+      await this.saveLxrIndexData(indexArr)
     } catch (err) {
       console.log(err)
     }
     return { status: 200, message: 'OK' }
   },
   // 理性人指数数据redis持久化-
-  async saveLxrIndexData (response) {
-    const indexDatas = response.data.data
+  async saveLxrIndexData (arr) {
+    const indexDatas = arr
     let tempLeastDealDate = null
     const indexDataAll = {}
     for (let i = 0; i < indexDatas.length; i++) {
