@@ -56,14 +56,14 @@ module.exports = {
       const mydata = {
         date: String(indexData.date),
         cname: this.queryIndexName(indexData.stockCode),
-        pe: indexData.pe_ttm.y_10.weightedAvg.latestVal,
-        pe_pos: indexData.pe_ttm.y_10.weightedAvg.latestValPos,
-        pb: indexData.pb.y_10.weightedAvg.latestVal,
-        pb_pos: indexData.pb.y_10.weightedAvg.latestValPos,
-        pe_min_val: indexData.pe_ttm.y_10.weightedAvg.minVal,
-        pe_chance_val: indexData.pe_ttm.y_10.weightedAvg.chanceVal,
-        pb_min_val: indexData.pb.y_10.weightedAvg.minVal,
-        pb_chance_val: indexData.pb.y_10.weightedAvg.chanceVal,
+        pe: indexData.pe_ttm.y10.mcw.cv,
+        pe_pos: indexData.pe_ttm.y10.mcw.cvpos,
+        pb: indexData.pb.y10.mcw.cv,
+        pb_pos: indexData.pb.y10.mcw.cvpos,
+        pe_min_val: indexData.pe_ttm.y10.mcw.minv,
+        pe_chance_val: indexData.pe_ttm.y10.mcw.q2v,
+        pb_min_val: indexData.pb.y10.mcw.minv,
+        pb_chance_val: indexData.pb.y10.mcw.q2v,
         source: '理性人'
       }
 
