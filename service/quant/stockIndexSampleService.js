@@ -35,8 +35,8 @@ module.exports = {
       sampleData.forEach(async (sample) => {
         sample.date = date
         // sample.samples = Object.assign({}, sample.constituentStockCodes)
-        sample.samples = JSON.parse(JSON.stringify(sample.constituentStockCodes))
-        delete sample.constituentStockCodes
+        sample.samples = JSON.parse(JSON.stringify(sample.constituents))
+        delete sample.constituents
         await mongdbUtils.updateOne('stock', 'indexSample', { _id: sample.stockCode }, sample)
       })
     } catch (err) {

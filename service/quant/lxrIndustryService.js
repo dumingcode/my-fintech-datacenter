@@ -80,8 +80,8 @@ module.exports = {
       arr.forEach(async element => {
         element.date = moment().format('YYYY-MM-DD')
         // element.samples = Object.assign({}, element.constituentStockCodes)
-        element.samples = JSON.parse(JSON.stringify(element.constituentStockCodes))
-        delete element.constituentStockCodes
+        element.samples = JSON.parse(JSON.stringify(element.constituents))
+        delete element.constituents
         await mongdbUtils.updateOne('stock', 'industrySample', { _id: element.stockCode }, element)
       })
     } catch (err) {
