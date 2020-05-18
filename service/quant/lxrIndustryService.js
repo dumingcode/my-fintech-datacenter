@@ -79,14 +79,25 @@ module.exports = {
       const arr = indData.data
       arr.forEach(async element => {
         element.date = moment().format('YYYY-MM-DD')
-        // element.samples = Object.assign({}, element.constituentStockCodes)
-        element.samples = JSON.parse(JSON.stringify(element.constituents))
+        const samples = this.handleOneSample(element)
+        element.samples = samples
         delete element.constituents
         await mongdbUtils.updateOne('stock', 'industrySample', { _id: element.stockCode }, element)
       })
     } catch (err) {
       console.log(err)
     }
+  },
+  handleOneSample (element) {
+    const samples = element.constituents
+    if (!(samples instanceof Array)) {
+      return []
+    }
+    const arr = []
+    samples.forEach((sam) => {
+      arr.push(sam.stockCode)
+    })
+    return arr
   }
 
 }
